@@ -9,10 +9,11 @@ import java.util.List;
 
 import org.android.walletdroid.R;
 import org.android.walletdroid.bbdd.ManagerBBDD;
-import org.android.walletdroid.listeners.ComboMesListener;
 import org.android.walletdroid.utils.CrearCelda;
+import org.android.walletdroid.utils.WalletDroidDateUtils;
 
 import android.app.TabActivity;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -21,6 +22,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
@@ -28,32 +30,48 @@ import android.widget.TabHost;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.TabHost.TabSpec;
 
 public class WalletDroidActivity extends TabActivity {
     /** Called when the activity is first created. */
+	
+	ManagerBBDD managerbbdd;	
+	SQLiteDatabase bbdd;
+    
     @Override
     public void onCreate(Bundle savedInstanceState) {
         try {
-        	
+        
         Bundle extras = getIntent().getExtras();
         int mesActual = 0;
         int añoActual = 0;
+        String mesString = "";
+        String etiquetaCombo = "";
+        
+        
 		if(extras!=null){
 			//Recogemos los valores seleccionados en el SELECT de meses.
 			mesActual = extras.getInt("mes");
 			añoActual = extras.getInt("año");
+			mesString = WalletDroidDateUtils.monthToString(mesActual);
+			etiquetaCombo = mesString + " " + String.valueOf(añoActual);
 		} else {
 			// No entramos desde el Select de Meses, mostramos las facturas del mes actual.
 			Calendar cal = Calendar.getInstance();
         	mesActual = cal.get(cal.MONTH) + 1; 
         	añoActual = cal.get(cal.YEAR);
+        	mesString = WalletDroidDateUtils.monthToString(mesActual);
+        	etiquetaCombo = mesString + " " + String.valueOf(añoActual);
 		}
         	
-        ManagerBBDD managerbbdd = ManagerBBDD.getInstance(this);	
-        managerbbdd.poblarBaseDatos();
+        
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
+        managerbbdd = ManagerBBDD.getInstance(this);
+        managerbbdd.poblarBaseDatos();
+        bbdd = managerbbdd.getReadableDatabase();
+        
         
         // Invocamos setup() sobre el TabHost.
     	TabHost tabHost = (TabHost)findViewById(android.R.id.tabhost);
@@ -89,108 +107,13 @@ public class WalletDroidActivity extends TabActivity {
         		}
         	});
         	
-        	//Obtenemos los registros para la tabla.
-        	//Primero obtenemos la tabla de datos
-        	TableLayout tablaFacturas = (TableLayout) this.findViewById(R.id.tablaFacturas);
-        	//Construimos la fila de encabezado.
-        	TableRow filaEncabezado = new TableRow(this);
-        	TextView concepto = CrearCelda.getCeldaEncabezado(this);
-        	concepto.setText("Concepto  ");
-        	TextView fecha = CrearCelda.getCeldaEncabezado(this);
-        	fecha.setText("Fecha  ");
-        	TextView ingreso = CrearCelda.getCeldaEncabezado(this);
-        	ingreso.setText("Ingreso  ");
-        	TextView gasto = CrearCelda.getCeldaEncabezado(this);
-        	gasto.setText("Gasto  ");
-        	//Añado los TextViews a la fila de encabezado.
-        	filaEncabezado.addView(concepto);
-        	filaEncabezado.addView(fecha);
-        	filaEncabezado.addView(ingreso);
-        	filaEncabezado.addView(gasto);
-        	//Añado la fila de encabezado a la tabla.
-        	tablaFacturas.addView(filaEncabezado);
-        	
-        	//Obtenemos las facturas desde la base de datos:
-        	SQLiteDatabase bbdd = managerbbdd.getReadableDatabase();
-        	//Cursor cursor = (Cursor) bbdd.query("FACTURAS", new String[]{"CONCEPTO","IMPORTE","FECHA"}, "", null, null, null, null);
-        	String query = "SELECT CONCEPTO,IMPORTE,FECHA FROM FACTURAS WHERE FECHA LIKE '%-%" + mesActual + "-"+añoActual+"%' ORDER BY FECHA ASC";
-        	Cursor cursor = (Cursor) bbdd.rawQuery(query , null);
-        	float totalImportes = 0;
-        	TextView celda = CrearCelda.getCeldaTablaFacturas(this);
-        	
-        	while (cursor.moveToNext()) {
-        		TableRow filaFactura = new TableRow(this);
-        		String conceptoValue = cursor.getString(cursor.getColumnIndex("CONCEPTO"));
-        		boolean newline = false;
-        		if (conceptoValue.indexOf(" ")>0) {
-        			conceptoValue = conceptoValue.replaceAll(" ", System.getProperty("line.separator"));
-        			newline = true;
-        		}
-        		celda.setText(conceptoValue + "  ");
-        		filaFactura.addView(celda);
-        		celda = CrearCelda.getCeldaTablaFacturas(this);
-        		String fechaValue = cursor.getString(cursor.getColumnIndex("FECHA"));
-        		if (newline)
-        			fechaValue = fechaValue + "\n ";
-        		celda.setText(fechaValue+ "  ");
-        		filaFactura.addView(celda);
-        		celda = CrearCelda.getCeldaTablaFacturas(this);
-        		Float importe = cursor.getFloat(cursor.getColumnIndex("IMPORTE"));
-        		totalImportes = totalImportes + importe.floatValue();
-        		if (importe.compareTo(new Float(0)) > 0) {
-        			String importeValue = importe.toString();
-        			if (newline)
-        				importeValue = importeValue + "\n ";
-        			celda.setText(importeValue + "  ");
-        			filaFactura.addView(celda);
-        			celda = CrearCelda.getCeldaTablaFacturas(this);
-        			if (newline)
-        				celda.setText("\n ");
-        			else
-        				celda.setText("");
-        			filaFactura.addView(celda);
-        			celda = CrearCelda.getCeldaTablaFacturas(this);
-        		}
-        		else {
-        			if (newline)
-        				celda.setText("\n ");
-        			else
-        				celda.setText("");
-        			filaFactura.addView(celda);
-        			celda = CrearCelda.getCeldaTablaFacturas(this);
-        			String importeValue = importe.toString();
-        			if (newline)
-        				importeValue = importeValue + "\n ";
-        			celda.setText( importeValue + "  ");
-        			filaFactura.addView(celda);
-        			celda = CrearCelda.getCeldaTablaFacturas(this);
-        		}
-        		
-        		tablaFacturas.addView(filaFactura);
-        	}
-        	
-        	//Añadimos la fila de totales
-        	TableRow filaTotales = new TableRow(this);
-        	celda = CrearCelda.getCeldaTotales(this);
-        	celda.setText("TOTAL: ");
-        	filaTotales.addView(celda);
-        	celda = CrearCelda.getCeldaTotales(this);
-        	filaTotales.addView(celda);
-        	celda = CrearCelda.getCeldaTotales(this);
-        	filaTotales.addView(celda);
-        	celda = CrearCelda.getCeldaTotales(this);
-        	celda.setText(String.valueOf(totalImportes));
-        	if (totalImportes > 0)
-        		celda.setTextColor(Color.GREEN);
-        	else 
-        		celda.setTextColor(Color.RED);
-        	filaTotales.addView(celda);
-        	tablaFacturas.addView(filaTotales);
+        	//ACTUALIZAMOS LA LISTA DE FACTURAS
+        	actualizaListaFacturas(mesActual,añoActual);
         	
         	//Poblamos el comboBox.
         	Spinner comboBox = (Spinner)this.findViewById(R.id.comboMeses);
         	HashMap meses = new HashMap();
-        	cursor = (Cursor) bbdd.rawQuery("SELECT FECHA FROM FACTURAS ORDER BY FECHA DESC" , null);
+        	Cursor cursor = (Cursor) bbdd.rawQuery("SELECT FECHA FROM FACTURAS ORDER BY FECHA DESC" , null);
     		while (cursor.moveToNext()) {
     			String fechaValue = cursor.getString(cursor.getColumnIndex("FECHA"));
     			String[] tokens = fechaValue.split("-");
@@ -198,23 +121,9 @@ public class WalletDroidActivity extends TabActivity {
     			int mes = Integer.parseInt(tokens[1]);
     			int año = Integer.parseInt(tokens[2]);
     			String stringMes = "";
-    			switch (mes) {
-				case 1 : stringMes += "Enero  "; break;
-				case 2 : stringMes += "Febrero  "; break;
-				case 3 : stringMes += "Marzo  "; break;
-				case 4 : stringMes += "Abril  "; break;
-				case 5 : stringMes += "Mayo  "; break;
-				case 6 : stringMes += "Junio  "; break;
-				case 7 : stringMes += "Julio  "; break;
-				case 8 : stringMes += "Agosto  "; break;
-				case 9 : stringMes += "Septiembre  "; break;
-				case 10 : stringMes += "Octubre  "; break;
-				case 11 : stringMes += "Noviembre  "; break;
-				case 12 : stringMes += "Diciembre  "; break;
-				
-    			}
-    			
-    			meses.put(stringMes + año, stringMes + año);
+    			stringMes = WalletDroidDateUtils.monthToString(mes);
+    			    			
+    			meses.put(stringMes + año, stringMes + " " + año);
     			
     		}
     		
@@ -231,7 +140,7 @@ public class WalletDroidActivity extends TabActivity {
     		spinner_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
     		comboBox.setAdapter(spinner_adapter);
     		comboBox.setOnItemSelectedListener(new ComboMesListener(WalletDroidActivity.this));
-    		
+    		comboBox.setSelection(spinner_adapter.getPosition(etiquetaCombo));
         }
       }
       catch (Exception e) {
@@ -240,4 +149,156 @@ public class WalletDroidActivity extends TabActivity {
         	e.printStackTrace();
       }
     }
+    
+
+
+   private void actualizaListaFacturas(int mesActual,int añoActual) {
+
+   		//Obtenemos los registros para la tabla.
+	   //Primero obtenemos la tabla de datos
+   		TableLayout tablaFacturas = (TableLayout) this.findViewById(R.id.tablaFacturas);
+   		tablaFacturas.removeAllViews();
+   		//TableLayout tablaFacturas = new TableLayout(this);
+   		//Construimos la fila de encabezado.
+   		TableRow filaEncabezado = new TableRow(this);
+   		TextView concepto = CrearCelda.getCeldaEncabezado(this);
+   		concepto.setText("Concepto  ");
+   		TextView fecha = CrearCelda.getCeldaEncabezado(this);
+   		fecha.setText("Fecha  ");
+   		TextView ingreso = CrearCelda.getCeldaEncabezado(this);
+   		ingreso.setText("Ingreso  ");
+   		TextView gasto = CrearCelda.getCeldaEncabezado(this);
+   		gasto.setText("Gasto  ");
+   		//Añado los TextViews a la fila de encabezado.
+   		filaEncabezado.addView(concepto);
+   		filaEncabezado.addView(fecha);
+   		filaEncabezado.addView(ingreso);
+   		filaEncabezado.addView(gasto);
+   		//Añado la fila de encabezado a la tabla.
+   		tablaFacturas.addView(filaEncabezado);
+   	
+   		//Obtenemos las facturas desde la base de datos:
+   		SQLiteDatabase bbdd = managerbbdd.getReadableDatabase();
+   		//Cursor cursor = (Cursor) bbdd.query("FACTURAS", new String[]{"CONCEPTO","IMPORTE","FECHA"}, "", null, null, null, null);
+   		String query = "SELECT CONCEPTO,IMPORTE,FECHA FROM FACTURAS WHERE FECHA LIKE '%-%" + mesActual + "-"+añoActual+"%' ORDER BY FECHA ASC";
+   		Cursor cursor = (Cursor) bbdd.rawQuery(query , null);
+   		float totalImportes = 0;
+   		TextView celda = CrearCelda.getCeldaTablaFacturas(this);
+   	
+   		while (cursor.moveToNext()) {
+   			TableRow filaFactura = new TableRow(this);
+   			String conceptoValue = cursor.getString(cursor.getColumnIndex("CONCEPTO"));
+   			boolean newline = false;
+   			if (conceptoValue.indexOf(" ")>0) {
+   				conceptoValue = conceptoValue.replaceAll(" ", System.getProperty("line.separator"));
+   				newline = true;
+   			}
+   			celda.setText(conceptoValue + "  ");
+   			filaFactura.addView(celda);
+   			celda = CrearCelda.getCeldaTablaFacturas(this);
+   			String fechaValue = cursor.getString(cursor.getColumnIndex("FECHA"));
+   			if (newline)
+   				fechaValue = fechaValue + "\n ";
+   				celda.setText(fechaValue+ "  ");
+   				filaFactura.addView(celda);
+   				celda = CrearCelda.getCeldaTablaFacturas(this);
+   				Float importe = cursor.getFloat(cursor.getColumnIndex("IMPORTE"));
+   				totalImportes = totalImportes + importe.floatValue();
+   				if (importe.compareTo(new Float(0)) > 0) {
+   					String importeValue = importe.toString();
+   					if (newline)
+   						importeValue = importeValue + "\n ";
+   					celda.setText(importeValue + "  ");
+   					filaFactura.addView(celda);
+   					celda = CrearCelda.getCeldaTablaFacturas(this);
+   					if (newline)
+   						celda.setText("\n ");
+   					else
+   						celda.setText("");
+   					filaFactura.addView(celda);
+   					celda = CrearCelda.getCeldaTablaFacturas(this);
+   				}
+   				else {
+   					if (newline)
+   						celda.setText("\n ");
+   					else
+   						celda.setText("");
+   					filaFactura.addView(celda);
+   					celda = CrearCelda.getCeldaTablaFacturas(this);
+   					String importeValue = importe.toString();
+   					if (newline)
+   						importeValue = importeValue + "\n ";
+   					celda.setText( importeValue + "  ");
+   					filaFactura.addView(celda);
+   					celda = CrearCelda.getCeldaTablaFacturas(this);
+   				}
+   		
+   				tablaFacturas.addView(filaFactura);
+   		}
+   	
+   		//Añadimos la fila de totales
+   		TableRow filaTotales = new TableRow(this);
+   		celda = CrearCelda.getCeldaTotales(this);
+   		celda.setText("TOTAL: ");
+   		filaTotales.addView(celda);
+   		celda = CrearCelda.getCeldaTotales(this);
+   		filaTotales.addView(celda);
+   		celda = CrearCelda.getCeldaTotales(this);
+   		filaTotales.addView(celda);
+   		celda = CrearCelda.getCeldaTotales(this);
+   		celda.setText(String.valueOf(totalImportes));
+   		if (totalImportes > 0)
+   			celda.setTextColor(Color.GREEN);
+   		else 
+   			celda.setTextColor(Color.RED);
+   		filaTotales.addView(celda);
+   		tablaFacturas.addView(filaTotales);
+   	
+   }
+    
+   private class ComboMesListener implements OnItemSelectedListener {
+    	
+    	private Context ctx; 
+    	/*
+    	 Para evitar el problema de que el onItemSelectedListener se dispara al
+    	posicionar el combo en el layout, definimos un contador, que impide que
+    	se ejecute código la primera vez que se posiciona el listener. 
+    	*/
+    	public int count = 0; 
+    	
+    	public ComboMesListener (Context c) {
+    		ctx = c;
+    		count = 0;
+    	} 
+    	
+    	public void onItemSelected(AdapterView<?> parent, View view, int pos,long id) {
+    		  
+    		  if (count > 0 && parent.getId() == R.id.comboMeses) {
+    			String fechaSeleccionada = (String)parent.getItemAtPosition(pos);
+    			String[] tokens = fechaSeleccionada.split(" ");
+    			String mesValue = tokens[0];
+    			int año = Integer.valueOf(tokens[1]);
+    			int mes = 0;
+    			mes = WalletDroidDateUtils.montToInt(mesValue);
+
+    			/*
+    			Intent i = new Intent(ctx,WalletDroidActivity.class);
+    			i.putExtra("mes", mes);
+    			i.putExtra("año", año);
+    			ctx.startActivity(i);
+    			*/
+    			actualizaListaFacturas(mes,año);
+    			
+    		  }
+    		  count++;//Incrementamos el contador para que los cambios en el combo se pasen al onItemSelected
+    		
+    		
+    		
+    	}
+    	public void onNothingSelected(AdapterView<?> parent) {
+    		// Do nothing.
+    	}
+
+    }
+    
 }
