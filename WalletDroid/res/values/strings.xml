@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="seleccione_mes">Seleccione un mes: </string>
+    <string name="app_name">WalletDroid</string>
+    <string name="nuevo_registro">Crear Registro</string>
+    <string name="nueva_factura">Nueva Factura </string>
+    <string name="guardar_factura">Guardar Factura </string>
+    <string name="buscar_factura">Buscar Factura </string>
+    <string name="LabelConcepto">Concepto: </string>
+    <string name="LabelFecha">Fecha </string>
+    <string name="LabelImporte">Importe: </string>
+    <string name="TabMes">Vista por Mes </string>
+
+</resources>
