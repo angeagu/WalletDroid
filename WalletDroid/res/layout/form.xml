@@ -52,16 +52,10 @@
         android:layout_height="wrap_content"
         android:text="@string/LabelFecha" />
 
-        <!--  Solo a partir de la version 3.0
         
-        <CalendarView
-            android:id="@+id/FechaFactura"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-        -->
-
         <DatePicker
             android:id="@+id/FechaFactura"
+            android:calendarViewShown="false"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
@@ -91,8 +85,8 @@
 </TableLayout>
 
      <View
-    				android:layout_width="fill_parent"
-    				android:layout_height="15dp" />
+    	android:layout_width="fill_parent"
+    	android:layout_height="15dp" />
      
     <Button
         android:id="@+id/BotonGuardarFactura"

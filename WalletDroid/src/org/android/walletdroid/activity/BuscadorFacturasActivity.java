@@ -3,6 +3,7 @@ package org.android.walletdroid.activity;
 import org.android.walletdroid.bbdd.ManagerBBDD;
 import org.android.walletdroid.utils.Constants;
 import org.android.walletdroid.utils.CrearCelda;
+import org.android.walletdroid.utils.UserInterfaceComponent;
 
 import android.app.Activity;
 import android.content.Context;
@@ -31,26 +32,41 @@ public class BuscadorFacturasActivity extends Activity {
 	        	
 	    		LinearLayout linearLayout = new LinearLayout(this);
 	    		linearLayout.setOrientation(LinearLayout.VERTICAL);
+	    		
+	    		
+	    		View separador = UserInterfaceComponent.createSeparator(this);
+	    		linearLayout.addView(separador);
+	    		
+	    		
+	    		//Etiqueta
 	    		TextView tView = new TextView(this);
 	    		tView.setText("Buscar Factura: ");
+	    		linearLayout.addView(tView);
+	    		
+	    		separador = UserInterfaceComponent.createSeparator(this);
+	    		linearLayout.addView(separador);
+	    		
+	    		//Campo editable para buscar la factura.
 	    		EditText editText = new EditText(this);
 	    		editText.setId(Constants.idEditTextBusqueda);
+	    		linearLayout.addView(editText);
+	    		
+	    		separador = UserInterfaceComponent.createSeparator(this);
+	    		linearLayout.addView(separador);
+	    		
+	    		//Boton buscar.
 	    		Button botonBuscar = new Button(this);
 	    		botonBuscar.setText("Buscar...");
 	    		botonBuscar.setOnClickListener(new OnClickListener() {
 	        		public void onClick(View v) {
 	        			buscarFacturas(v.getContext());
-	        			//Intent i = new Intent(BuscadorFacturasActivity.this,ResultadosBusquedaActivity.class);
-	        			//i.putExtra("concepto", concepto);
-	        			//startActivityForResult(i, 1);
-	        			//startActivity(i);
 	        			
 	        		}
 	        	});
-	    		
-	    		linearLayout.addView(tView);
-	    		linearLayout.addView(editText);
 	    		linearLayout.addView(botonBuscar);
+	    		
+	    		
+	    		
 	    		
 	    		setContentView(linearLayout);
 	    		
@@ -173,16 +189,14 @@ public class BuscadorFacturasActivity extends Activity {
     		botonVolver.setText("Volver");
     		botonVolver.setOnClickListener(new OnClickListener() {
         		public void onClick(View v) {
-        			//buscarFacturas(v.getContext());
-        			Intent i = new Intent(BuscadorFacturasActivity.this,BuscadorFacturasActivity.class);
-        			//i.putExtra("concepto", concepto);
-        			//startActivity(i);
-        			//startActivityForResult(i, 1);
+        			Intent i = new Intent(BuscadorFacturasActivity.this,WalletDroidActivity.class);
+        			i.putExtra("mostrarTabFacturas",true);
         			startActivity(i);
         			
         			
         		}
         	});
+    		
     		linearLayout.addView(tablaFacturas);
     		linearLayout.addView(botonVolver);
     		setContentView(linearLayout);

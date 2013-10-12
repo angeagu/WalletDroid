@@ -10,6 +10,7 @@ import java.util.List;
 import org.android.walletdroid.R;
 import org.android.walletdroid.bbdd.ManagerBBDD;
 import org.android.walletdroid.utils.CrearCelda;
+import org.android.walletdroid.utils.VentanaAlerta;
 import org.android.walletdroid.utils.WalletDroidDateUtils;
 
 import android.app.TabActivity;
@@ -23,39 +24,55 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TabHost;
+import android.widget.TabHost.TabSpec;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
-import android.widget.AdapterView.OnItemSelectedListener;
-import android.widget.TabHost.TabSpec;
 
 public class WalletDroidActivity extends TabActivity {
     /** Called when the activity is first created. */
 	
 	ManagerBBDD managerbbdd;	
 	SQLiteDatabase bbdd;
+	int mesActual = 0;
+    int añoActual = 0;
     
     @Override
     public void onCreate(Bundle savedInstanceState) {
         try {
         
         Bundle extras = getIntent().getExtras();
-        int mesActual = 0;
-        int añoActual = 0;
+        
         String mesString = "";
         String etiquetaCombo = "";
-        
+        boolean mostrarTabFacturas = false;
         
 		if(extras!=null){
 			//Recogemos los valores seleccionados en el SELECT de meses.
-			mesActual = extras.getInt("mes");
-			añoActual = extras.getInt("año");
-			mesString = WalletDroidDateUtils.monthToString(mesActual);
-			etiquetaCombo = mesString + " " + String.valueOf(añoActual);
+			//Comprobamos si volvemos desde Buscar Facturas.
+        	//Si volvemos desde ahí, el tab a mostrar es el 2.
+        	mostrarTabFacturas = extras.getBoolean("mostrarTabFacturas");
+        	if (mostrarTabFacturas==false) {
+        		//No volvemos desde el Tab de Buscar Facturas
+        		mesActual = extras.getInt("mes");
+        		añoActual = extras.getInt("año");
+        		mesString = WalletDroidDateUtils.monthToString(mesActual);
+        		etiquetaCombo = mesString + " " + String.valueOf(añoActual);
+        	}
+        	else {
+        		//Entramos desde el Tab de Buscar Facturas. Mostramos las facturas
+        		//del mes actual.
+        		Calendar cal = Calendar.getInstance();
+            	mesActual = cal.get(cal.MONTH) + 1; 
+            	añoActual = cal.get(cal.YEAR);
+            	mesString = WalletDroidDateUtils.monthToString(mesActual);
+            	etiquetaCombo = mesString + " " + String.valueOf(añoActual);
+        	}
 		} else {
 			// No entramos desde el Select de Meses, mostramos las facturas del mes actual.
 			Calendar cal = Calendar.getInstance();
@@ -63,6 +80,7 @@ public class WalletDroidActivity extends TabActivity {
         	añoActual = cal.get(cal.YEAR);
         	mesString = WalletDroidDateUtils.monthToString(mesActual);
         	etiquetaCombo = mesString + " " + String.valueOf(añoActual);
+
 		}
         	
         
@@ -87,7 +105,14 @@ public class WalletDroidActivity extends TabActivity {
     	tabHost.addTab(segundaPestana);
     	tabHost.addTab(terceraPestana);
     	
-    	tabHost.setCurrentTab(0);
+    	if (!mostrarTabFacturas) {
+    		//Si no volvemos desde el Tab de BuscarFacturas, ponemos el tab de meses, el inicial
+    		tabHost.setCurrentTab(0);
+    	}
+    	else {
+    		//Sivolvemos desde el Tab de BuscarFacturas, ponemos el tab de Buscar Facturas
+    		tabHost.setCurrentTab(2);
+    	}
         
         if (findViewById(R.id.vista_principal) == null) {
         	if (savedInstanceState != null) {
@@ -107,8 +132,36 @@ public class WalletDroidActivity extends TabActivity {
         		}
         	});
         	
+        	//Definimos el listener del Botón Anterior
+        	Button botonAnterior = (Button) this.findViewById(R.id.BotonAnterior);
+        	botonAnterior.setOnClickListener(new OnClickListener() {
+        		public void onClick(View v) {
+        			 mesActual = mesActual -1;
+        			 if (mesActual == 0) {
+        				 mesActual = 12;
+        				 añoActual = añoActual - 1;
+        			 }
+        			 VentanaAlerta.mostrarAlerta(getApplicationContext(), "Balance Mes: " + WalletDroidDateUtils.monthToString(mesActual) + "-" + añoActual);
+        			 WalletDroidActivity.this.actualizarListaFacturas(mesActual,añoActual);       			
+        		}
+        	});
+        	
+        	//Definimos el listener del Botón Siguiente
+        	Button botonSiguiente = (Button) this.findViewById(R.id.BotonSiguiente);
+        	botonSiguiente.setOnClickListener(new OnClickListener() {
+        		public void onClick(View v) {
+        			 mesActual = mesActual +1;
+        			 if (mesActual == 13) {
+        				 mesActual = 1;
+        				 añoActual = añoActual + 1;
+        			 }
+        			 VentanaAlerta.mostrarAlerta(getApplicationContext(), "Balance Mes: " + WalletDroidDateUtils.monthToString(mesActual) + "-" + añoActual);
+        			 WalletDroidActivity.this.actualizarListaFacturas(mesActual,añoActual);        			
+        		}
+        	});
+        	
         	//ACTUALIZAMOS LA LISTA DE FACTURAS
-        	actualizaListaFacturas(mesActual,añoActual);
+        	actualizarListaFacturas(mesActual,añoActual);
         	
         	//Poblamos el comboBox.
         	Spinner comboBox = (Spinner)this.findViewById(R.id.comboMeses);
@@ -133,6 +186,8 @@ public class WalletDroidActivity extends TabActivity {
     		while (it.hasNext()) {
     			listaMeses.add(it.next());
     		}
+    		//Añadimos también el mes y el año actual.
+    		listaMeses.add(mesString + " " + añoActual);
     		
     		//Creamos el adaptador
     		ArrayAdapter<String> spinner_adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, listaMeses);
@@ -152,8 +207,12 @@ public class WalletDroidActivity extends TabActivity {
     
 
 
-   private void actualizaListaFacturas(int mesActual,int añoActual) {
+   private void actualizarListaFacturas(int mesActual,int añoActual) {
 
+	   	//Obtenemos el TextView de Mes Actual:
+	   	TextView tViewMesActual = (TextView)this.findViewById(R.id.mesActualValue);
+	   	tViewMesActual.setText(WalletDroidDateUtils.monthToString(mesActual).toUpperCase() + " " + añoActual);
+	   
    		//Obtenemos los registros para la tabla.
 	   //Primero obtenemos la tabla de datos
    		TableLayout tablaFacturas = (TableLayout) this.findViewById(R.id.tablaFacturas);
@@ -280,14 +339,9 @@ public class WalletDroidActivity extends TabActivity {
     			int año = Integer.valueOf(tokens[1]);
     			int mes = 0;
     			mes = WalletDroidDateUtils.montToInt(mesValue);
-
-    			/*
-    			Intent i = new Intent(ctx,WalletDroidActivity.class);
-    			i.putExtra("mes", mes);
-    			i.putExtra("año", año);
-    			ctx.startActivity(i);
-    			*/
-    			actualizaListaFacturas(mes,año);
+    			mesActual = mes;
+    			añoActual = año;
+    			actualizarListaFacturas(mes,año);
     			
     		  }
     		  count++;//Incrementamos el contador para que los cambios en el combo se pasen al onItemSelected

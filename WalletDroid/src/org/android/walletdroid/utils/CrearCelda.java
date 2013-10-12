@@ -37,4 +37,12 @@ public class CrearCelda {
 		
 	}
 	
+	public static TextView getTextViewCabecera(Context c) {
+		TextView celda = new TextView(c);
+		celda.setTextSize(22);
+    	celda.setTextColor(Color.BLUE);
+    	celda.setBackgroundColor(Color.BLACK);
+    	return celda;
+	}
+	
 }
