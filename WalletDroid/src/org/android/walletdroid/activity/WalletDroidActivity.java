@@ -9,6 +9,7 @@ import java.util.List;
 
 import org.android.walletdroid.R;
 import org.android.walletdroid.bbdd.ManagerBBDD;
+import org.android.walletdroid.listener.TextViewFacturaOnClickListener;
 import org.android.walletdroid.utils.CrearCelda;
 import org.android.walletdroid.utils.VentanaAlerta;
 import org.android.walletdroid.utils.WalletDroidDateUtils;
@@ -239,12 +240,13 @@ public class WalletDroidActivity extends TabActivity {
    		//Obtenemos las facturas desde la base de datos:
    		SQLiteDatabase bbdd = managerbbdd.getReadableDatabase();
    		//Cursor cursor = (Cursor) bbdd.query("FACTURAS", new String[]{"CONCEPTO","IMPORTE","FECHA"}, "", null, null, null, null);
-   		String query = "SELECT CONCEPTO,IMPORTE,FECHA FROM FACTURAS WHERE FECHA LIKE '%-%" + mesActual + "-"+añoActual+"%' ORDER BY FECHA ASC";
+   		String query = "SELECT ID_RECIBO,CONCEPTO,IMPORTE,FECHA FROM FACTURAS WHERE FECHA LIKE '%-%" + mesActual + "-"+añoActual+"%' ORDER BY FECHA ASC";
    		Cursor cursor = (Cursor) bbdd.rawQuery(query , null);
    		float totalImportes = 0;
    		TextView celda = CrearCelda.getCeldaTablaFacturas(this);
    	
    		while (cursor.moveToNext()) {
+   			//Añadimos el concepto.
    			TableRow filaFactura = new TableRow(this);
    			String conceptoValue = cursor.getString(cursor.getColumnIndex("CONCEPTO"));
    			boolean newline = false;
@@ -253,7 +255,14 @@ public class WalletDroidActivity extends TabActivity {
    				newline = true;
    			}
    			celda.setText(conceptoValue + "  ");
+   			//Añadimos el listener al textview de concepto
+   			celda.setOnClickListener(TextViewFacturaOnClickListener.getInstance());
+   			//Añadimos la primary key de ese recibo.
+   			int id_recibo  = cursor.getInt(cursor.getColumnIndex("ID_RECIBO"));
+   			celda.setTag(new Integer(id_recibo));
    			filaFactura.addView(celda);
+   			
+   			//Añadimos la Fecha
    			celda = CrearCelda.getCeldaTablaFacturas(this);
    			String fechaValue = cursor.getString(cursor.getColumnIndex("FECHA"));
    			if (newline)

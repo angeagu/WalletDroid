@@ -16,10 +16,46 @@ import android.widget.EditText;
 
 public class NuevaFacturaActivity extends Activity {
 
+	boolean updateFactura = false; //Indica si debemos hacer update de una factura o no.
+	int id_recibo = 0; //Indica el id del Recibo que queremos actualizar.
+	
 	public void onCreate(Bundle savedInstanceState) {
+		
+		Bundle extras = getIntent().getExtras();
+		
+		
 		try {
 			super.onCreate(savedInstanceState);
 			setContentView(R.layout.form);
+			
+			if (extras!=null) {
+				
+				//Estamos tratando de actualizar una factura.
+				updateFactura=true;
+				
+				id_recibo = extras.getInt("id_recibo");
+				String concepto = extras.getString("concepto"); 
+				String fecha = extras.getString("fecha");
+				Float importe = extras.getFloat("importe");
+
+				//Establecemos el valor del concepto.
+				EditText etConcepto = (EditText) this.findViewById(R.id.TextoConceptoFactura);
+				etConcepto.setText(concepto);
+				
+				//Establecemos la fecha
+				DatePicker datePicker = (DatePicker) this.findViewById(R.id.FechaFactura);
+				String[] tokens = fecha.split("-");
+    			int dia = Integer.parseInt(tokens[0]); 
+    			int mes = Integer.parseInt(tokens[1]);
+    			int año = Integer.parseInt(tokens[2]);
+				datePicker.updateDate(año, mes-1, dia);
+				etConcepto.setText(concepto);
+				
+				//Establecemos el valor del importe.
+				EditText etImporte = (EditText) this.findViewById(R.id.TextoImporteFactura);
+				etImporte.setText(importe.toString());
+				
+			}
         
 			/*
 			//Ponemos el menú de nuevo registro, el Fragment.
@@ -35,16 +71,13 @@ public class NuevaFacturaActivity extends Activity {
         	Button botonGuardarFactura = (Button) this.findViewById(R.id.BotonGuardarFactura);
         	botonGuardarFactura.setOnClickListener(new OnClickListener() {
         		public void onClick(View v) {
-        			
-        			//Guardamos la factura en la BBDD
+        			        			    
         			guardarFactura(v.getContext());
-        			
         			//Invocamos a la actividad principal para que vuelva a mostrar
         			//la lista de facturas.
         			Intent i = new Intent(NuevaFacturaActivity.this,WalletDroidActivity.class);
         			//startActivityForResult(i, 1);
         			startActivity(i);
-        			
         			
         		}
         	});
@@ -69,7 +102,12 @@ public class NuevaFacturaActivity extends Activity {
 			float importe = Float.parseFloat(importeEditText.getText().toString());
 		
 			ManagerBBDD manager = ManagerBBDD.getInstance(context);
-			manager.addFactura(concepto, fecha, importe);
+			if (updateFactura==false) {
+				//Añadimos nueva factura.
+				manager.addFactura(concepto, fecha, importe);
+			}
+			else 
+				manager.updateFactura(id_recibo,concepto, fecha, importe);
 		}
 		catch (Exception e) {
 			Log.e("NuevaFacturaActivity.guardarFactura()", "Excepcion: " + e.toString());
@@ -77,4 +115,5 @@ public class NuevaFacturaActivity extends Activity {
         	e.printStackTrace();
 		}
 	}
+	
 }

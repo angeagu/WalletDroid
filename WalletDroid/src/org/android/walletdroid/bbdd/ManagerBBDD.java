@@ -14,6 +14,7 @@ public class ManagerBBDD extends SQLiteOpenHelper {
     private static final String TABLE_NAME = "FACTURAS";
     private static final String TABLE_CREATE =
                 "CREATE TABLE " + TABLE_NAME + " (" +
+                "ID_RECIBO" + " INTEGER PRIMARY KEY, " +
                 "CONCEPTO" + " TEXT, " +
                 "IMPORTE" + " REAL, " +
                 "FECHA" + " TEXT);";
@@ -96,8 +97,14 @@ public class ManagerBBDD extends SQLiteOpenHelper {
 	public void addFactura(String concepto, String fecha, float importe) {
 		SQLiteDatabase db = this.getWritableDatabase();
 		db.execSQL("INSERT INTO FACTURAS (CONCEPTO,IMPORTE,FECHA) VALUES ('"+concepto+"','"+importe+"','"+fecha+"')"); 
+			
+	}
 	
-
+	public void updateFactura(int id_recibo, String concepto, String fecha, float importe) {
+		SQLiteDatabase db = this.getWritableDatabase();
+		String sql = "UPDATE FACTURAS SET CONCEPTO='"+concepto+"', IMPORTE='"+importe+"', FECHA='"+fecha+"' WHERE ID_RECIBO='"+id_recibo+"'";
+		db.execSQL(sql);
 		
 	}
+	
 }
