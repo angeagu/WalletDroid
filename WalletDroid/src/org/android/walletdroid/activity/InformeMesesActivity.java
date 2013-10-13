@@ -4,6 +4,7 @@ import java.util.Calendar;
 
 import org.android.walletdroid.R;
 import org.android.walletdroid.bbdd.ManagerBBDD;
+import org.android.walletdroid.listener.TextViewMesOnClickListener;
 import org.android.walletdroid.utils.CrearCelda;
 import org.android.walletdroid.utils.UserInterfaceComponent;
 import org.android.walletdroid.utils.VentanaAlerta;
@@ -97,6 +98,9 @@ public class InformeMesesActivity extends Activity {
     			stringMes = WalletDroidDateUtils.monthToString(i);
     			TextView celdaMes = CrearCelda.getCeldaTablaFacturas(this);
     			celdaMes.setText(stringMes);
+    			//Añadimos el listener para el TextView de Mes.
+    			celdaMes.setOnClickListener(TextViewMesOnClickListener.getInstance());
+    			celdaMes.setTag(stringMes+"-"+año);
     			filaMes.addView(celdaMes);
     			
     		}

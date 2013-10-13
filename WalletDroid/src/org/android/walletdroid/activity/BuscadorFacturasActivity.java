@@ -1,6 +1,7 @@
 package org.android.walletdroid.activity;
 
 import org.android.walletdroid.bbdd.ManagerBBDD;
+import org.android.walletdroid.listener.TextViewFacturaOnClickListener;
 import org.android.walletdroid.utils.Constants;
 import org.android.walletdroid.utils.CrearCelda;
 import org.android.walletdroid.utils.UserInterfaceComponent;
@@ -110,13 +111,14 @@ public class BuscadorFacturasActivity extends Activity {
         	tablaFacturas.addView(filaEncabezado);
         	
         	//Lanzamos la consulta.
-        	String query = "SELECT CONCEPTO,IMPORTE,FECHA FROM FACTURAS WHERE CONCEPTO LIKE '%" + textoBusqueda + "%'";
+        	String query = "SELECT ID_RECIBO,CONCEPTO,IMPORTE,FECHA FROM FACTURAS WHERE CONCEPTO LIKE '%" + textoBusqueda + "%'";
         	Cursor cursor = (Cursor) bbdd.rawQuery(query , null);
         	float totalImportes = 0;
         	TextView celda = CrearCelda.getCeldaTablaFacturas(this);
         	
         	while (cursor.moveToNext()) {
         		TableRow filaFactura = new TableRow(this);
+        		//Añadimos el concepto
         		String conceptoValue = cursor.getString(cursor.getColumnIndex("CONCEPTO"));
         		boolean newline = false;
         		if (conceptoValue.indexOf(" ")>0) {
@@ -124,13 +126,22 @@ public class BuscadorFacturasActivity extends Activity {
         			newline = true;
         		}
         		celda.setText(conceptoValue + "  ");
+        		//Añadimos el listener al concepto.
+        		celda.setOnClickListener(TextViewFacturaOnClickListener.getInstance());
+        		int id_recibo  = cursor.getInt(cursor.getColumnIndex("ID_RECIBO"));
+       			celda.setTag(new Integer(id_recibo));
+       			
         		filaFactura.addView(celda);
+        		
+        		//Añadimos la fecha.
         		celda = CrearCelda.getCeldaTablaFacturas(this);
         		String fechaValue = cursor.getString(cursor.getColumnIndex("FECHA"));
         		if (newline)
         			fechaValue = fechaValue + "\n ";
         		celda.setText(fechaValue+ "  ");
         		filaFactura.addView(celda);
+        		
+        		//Añadimos el importe.
         		celda = CrearCelda.getCeldaTablaFacturas(this);
         		Float importe = cursor.getFloat(cursor.getColumnIndex("IMPORTE"));
         		totalImportes = totalImportes + importe.floatValue();
