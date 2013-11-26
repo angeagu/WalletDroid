@@ -23,7 +23,6 @@ public class NuevaFacturaActivity extends Activity {
 		
 		Bundle extras = getIntent().getExtras();
 		
-		
 		try {
 			super.onCreate(savedInstanceState);
 			setContentView(R.layout.form);

@@ -3,6 +3,7 @@ package org.android.walletdroid.activity;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -177,9 +178,12 @@ public class WalletDroidActivity extends TabActivity {
     			String stringMes = "";
     			stringMes = WalletDroidDateUtils.monthToString(mes);
     			    			
-    			meses.put(stringMes + año, stringMes + " " + año);
+    			meses.put(stringMes + año, año + " " + stringMes);
     			
     		}
+    		
+    		//Añadimos también el mes y el año actual.
+    		meses.put(mesString + añoActual, añoActual + " " + mesString);
     		
     		List<String> listaMeses = new ArrayList<String>();
     		Collection c = meses.values();
@@ -187,8 +191,9 @@ public class WalletDroidActivity extends TabActivity {
     		while (it.hasNext()) {
     			listaMeses.add(it.next());
     		}
-    		//Añadimos también el mes y el año actual.
-    		listaMeses.add(mesString + " " + añoActual);
+    		
+    		//Ordenamos los meses del combo
+    		Collections.sort(listaMeses);
     		
     		//Creamos el adaptador
     		ArrayAdapter<String> spinner_adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, listaMeses);
@@ -344,8 +349,8 @@ public class WalletDroidActivity extends TabActivity {
     		  if (count > 0 && parent.getId() == R.id.comboMeses) {
     			String fechaSeleccionada = (String)parent.getItemAtPosition(pos);
     			String[] tokens = fechaSeleccionada.split(" ");
-    			String mesValue = tokens[0];
-    			int año = Integer.valueOf(tokens[1]);
+    			String mesValue = tokens[1];
+    			int año = Integer.valueOf(tokens[0]);
     			int mes = 0;
     			mes = WalletDroidDateUtils.montToInt(mesValue);
     			mesActual = mes;
@@ -354,8 +359,7 @@ public class WalletDroidActivity extends TabActivity {
     			
     		  }
     		  count++;//Incrementamos el contador para que los cambios en el combo se pasen al onItemSelected
-    		
-    		
+
     		
     	}
     	public void onNothingSelected(AdapterView<?> parent) {

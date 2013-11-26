@@ -82,6 +82,9 @@ public class BuscadorFacturasActivity extends Activity {
 			
 			LinearLayout linearLayout = new LinearLayout(this);
     		linearLayout.setOrientation(LinearLayout.VERTICAL);
+    		
+    		View separador = UserInterfaceComponent.createSeparator(this);
+    		linearLayout.addView(separador);
 
         	ManagerBBDD managerbbdd = ManagerBBDD.getInstance(this);
         	SQLiteDatabase bbdd = managerbbdd.getReadableDatabase();
