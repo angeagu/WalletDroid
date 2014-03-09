@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="seleccione_mes">Wahlen Sie ein Monat: </string>
+    <string name="app_name">WalletDroid</string>
+    <string name="nuevo_registro">Rechnung Schaffen</string>
+    <string name="nueva_factura">Neue Rechnung</string>
+    <string name="guardar_factura">Rechnung sparen </string>
+    <string name="buscar_factura">Rechnung finden </string>
+    <string name="LabelConcepto">Konzept: </string>
+    <string name="LabelFecha">Datum </string>
+    <string name="LabelImporte">Menge: </string>
+    <string name="TabMes">Monatsansicht </string>
+    <string name="anterior">Früher</string>
+    <string name="siguiente">Folgende</string>
+    <string name="mesActual">Aktueller Monat:  </string>
+    <string name="mesInicio">Initiale Monat:  </string>
+    <string name="mesFin">Schluss Monat:  </string>
+    <string name="filtrar_fechas">Filtern nach Monat:</string>
+
+    <string name="menu_configuracion">Konfiguration </string>
+    <string name="menu_exportar_excel">Excel Sheet schaffen  </string>
+    <string name="menu_salir">Schließen  </string>
+    
+    <string name="enero">Janual  </string>
+    <string name="febrero">Februar  </string>
+    <string name="marzo">März  </string>
+    <string name="abril">April  </string>
+    <string name="mayo">Mai </string>
+    <string name="junio">Juni  </string>
+    <string name="julio">Juli  </string>
+    <string name="agosto">August  </string>
+    <string name="septiembre">September  </string>
+    <string name="octubre">Oktober  </string>
+    <string name="noviembre">November  </string>
+    <string name="diciembre">Dezember  </string>
+    
+    <string name="Mes">Monat</string>
+    <string name="Ano">Jahr</string>
+    <string name="BalanceMes">Monatlich Abschluss:</string>
+    <string name="BalanceAno">Jährlich Abschluss:</string>
+    <string name="Concepto">Konzept</string>
+    <string name="Fecha">Datum</string>
+    <string name="Ingreso">Ertrag</string>
+    <string name="Importe">Geldbetrag</string>
+    <string name="Gasto">Geldausgabe</string>
+    <string name="Total">TOTAL</string>
+    <string name="anoActual">Laufendes Jahr</string>
+    <string name="totalAnual">Jährlich Total</string>
+    <string name="anoAnterior">Vorjahr</string>
+    <string name="anoSiguiente">Nächstes Jahr</string>
+    <string name="errorFormatoNumero">Das Feld Betrag muss eine ganze Zahl oder Dezimalzahl sein</string>
+    <string name="conceptoNoVacio">Das Feld-Konzept darf nicht leer sein</string>
+    <string name="facturas">Rechnungen</string>
+    <string name="errorGenerarExcel">Es gab Probleme, die Excel-Tabelle generieren</string>
+    <string name="almacenamientoNoDisponible">Die externen Speicher (SD-Karte) ist nicht verfügbar</string>
+    <string name="excelDialogMensaje">Wählen Sie Start-Monat und letzten Monat um die Liste der Rechnungen zu generieren.</string>
+    <string name="configurationDialogMensaje">Wählen Sie Sprache:</string>
+    <string name="exitoGenerarExcel">Die Excel-Tabelle richtig erzeugt wird</string>
+    <string name="Aceptar">Annehmen</string>
+    <string name="Cancelar">Tilgen</string>
+    <string name="buscar">Finden...</string>
+    <string name="buscar_por_concepto">Suche Rechnung durch Konzept: </string>
+    <string name="errorComprobacionFechas">Das Startdatum kann nicht nach dem Enddatum sein</string>
+    <string name="volver">Zurückkommen</string>
+    
+    <string-array name="languages">
+        <item>Español</item>
+        <item>English</item>
+        <item>Deutsch</item>
+        <item>Français</item>
+    </string-array>
+    
+    
+</resources>

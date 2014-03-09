@@ -53,7 +53,7 @@
     <string name="conceptoNoVacio">El campo concepto no puede estar vacío</string>
     <string name="facturas">facturas</string>
     <string name="errorGenerarExcel">Error al generar Hoja Excel</string>
-    <string name="exitoGenerarExcel">Error al generar Hoja Excel</string>
+    <string name="exitoGenerarExcel">La Hoja Excel se ha generado de forma correcta</string>
     <string name="almacenamientoNoDisponible">El almacenamiento externo no está disponible.</string>
     <string name="excelDialogMensaje">Elija Mes inicio y Fin para generar la lista de facturas.</string>
     <string name="configurationDialogMensaje">Elija Lenguaje: </string>

@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
-import org.android.walletdroid.R;
+import com.kursea.walletdroid.R;
 
 import com.kursea.walletdroid.bbdd.ManagerBBDD;
 import com.kursea.walletdroid.listener.TextViewFacturaOnClickListener;

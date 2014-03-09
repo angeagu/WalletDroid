@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:id="@+id/tab1"
+                    android:layout_width="match_parent"
+    				android:layout_height="match_parent"
+    				android:orientation="vertical"
+    				android:gravity="center">	
+                    
+                <View android:layout_width="match_parent"
+    				  android:layout_height="15dp" />
+                    
+               <LinearLayout
+                    android:layout_width="wrap_content"
+    				android:layout_height="wrap_content"
+    				android:orientation="horizontal"
+    				android:gravity="center">	
+    				    
+                		<TextView
+        					android:layout_width="wrap_content"
+        					android:layout_height="wrap_content"
+        					android:text="@string/seleccione_mes" />
+                		
+                		<Spinner
+                    		android:id="@+id/comboMeses"
+                    		android:layout_width="wrap_content"
+                    		android:layout_height="wrap_content" />
+                		
+                </LinearLayout>
+
+                <View
+    				android:layout_width="match_parent"
+    				android:layout_height="15dp" />
+                
+                <LinearLayout
+                    android:layout_width="wrap_content"
+    				android:layout_height="wrap_content"
+    				android:orientation="horizontal"
+    				android:gravity="center">	
+                		 
+                	<TextView
+                    		android:id="@+id/mesActualLabel"
+        					android:layout_width="wrap_content"
+        					android:layout_height="wrap_content"
+        					android:text="@string/mesActual" />
+                	
+                	<TextView
+                    		android:id="@+id/mesActualValue"
+        					android:layout_width="102dp"
+        					android:layout_height="wrap_content" />
+                	
+                </LinearLayout>
+                
+                <View
+    				android:layout_width="match_parent"
+    				android:layout_height="15dp" />
+                	
+    				<TableLayout
+        				android:id="@+id/tablaFacturas"
+        				android:layout_width="fill_parent"
+        				android:layout_height="wrap_content" 
+        				android:scrollbars="vertical"
+        				android:stretchColumns="*"
+        				android:layout_gravity="center" >
+
+    				</TableLayout>                  
+    				
+    			<View
+    				android:layout_width="match_parent"
+    				android:layout_height="15dp" />    
+    				
+    			<LinearLayout
+    			    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    android:gravity="center">
+    			
+    			<Button
+        			android:id="@+id/BotonAnterior"
+        			android:layout_width="wrap_content"
+        			android:layout_height="wrap_content"
+        			android:text="@string/anterior"
+        			android:textSize="14sp" />  
+    			  
+    			<Button
+        			android:id="@+id/BotonNuevoRegistro"
+        			android:layout_width="wrap_content"
+        			android:layout_height="wrap_content"
+        			android:text="@string/nueva_factura"
+        			android:textSize="14sp" />
+                    
+    			<Button
+        			android:id="@+id/BotonSiguiente"
+        			android:layout_width="wrap_content"
+        			android:layout_height="wrap_content"
+        			android:text="@string/siguiente"
+        			android:textSize="14sp" />  
+    			
+    			</LinearLayout>
+    			
+</LinearLayout>
+				

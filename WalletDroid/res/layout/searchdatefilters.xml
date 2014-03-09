@@ -1,0 +1,62 @@
+<TableLayout
+    	xmlns:android="http://schemas.android.com/apk/res/android"
+    	 android:id="@+id/tableSearchFilters"	
+         android:layout_width="wrap_content"
+         android:layout_height="match_parent"
+         android:stretchColumns="*"
+    	 android:gravity="center" >
+
+    	 <TableRow
+             android:id="@+id/tableRowFiltroFechas"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content" >
+             
+    	     <CheckBox
+             android:id="@+id/checkBoxFiltroFechas"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:text="@string/filtrar_fechas" />
+    	     
+    	 </TableRow>    
+    
+         <TableRow
+             android:id="@+id/tableRowFechaInicio"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content" >
+             
+             <TextView
+                    android:id="@+id/textViewMesInicio"
+        			android:layout_width="wrap_content"
+        			android:layout_height="wrap_content"
+        			android:text="@string/mesInicio" />
+
+             <DatePicker
+            	android:id="@+id/datePickerFechaInicio"
+            	android:calendarViewShown="false"
+            	android:layout_width="wrap_content"
+            	android:layout_height="wrap_content"
+            	android:gravity="center" />
+             
+         </TableRow>
+
+        <TableRow
+             android:id="@+id/tableRowFechaFin"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content" >
+            
+            <TextView
+                    android:id="@+id/textViewMesFin"
+        			android:layout_width="wrap_content"
+        			android:layout_height="wrap_content"
+        			android:text="@string/mesFin" />
+             	
+	             <DatePicker
+            		android:id="@+id/datePickerFechaFin"
+            		android:calendarViewShown="false"
+            		android:layout_width="wrap_content"
+            		android:layout_height="wrap_content"
+            		android:gravity="center" />
+	             
+         </TableRow>
+
+</TableLayout>

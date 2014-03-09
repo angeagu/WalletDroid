@@ -1,0 +1,20 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:walletdroid="http://schemas.android.com/apk/res-auto" >
+ 
+    <item
+        android:id="@+id/menu_configuracion"
+        walletdroid:showAsAction="never"
+        android:title="@string/menu_configuracion"/>
+    
+    <item
+        android:id="@+id/menu_exportar_excel"
+        walletdroid:showAsAction="ifRoom"
+        android:icon="@drawable/excel_logo"
+        android:title="@string/menu_exportar_excel"/>
+    
+    <item
+        android:id="@+id/menu_salir"
+        walletdroid:showAsAction="never"
+        android:title="@string/menu_salir"/>
+ 
+</menu>

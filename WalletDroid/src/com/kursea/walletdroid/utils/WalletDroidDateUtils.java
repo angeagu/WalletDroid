@@ -1,6 +1,6 @@
 package com.kursea.walletdroid.utils;
 
-import org.android.walletdroid.R;
+import com.kursea.walletdroid.R;
 
 import android.content.Context;
 

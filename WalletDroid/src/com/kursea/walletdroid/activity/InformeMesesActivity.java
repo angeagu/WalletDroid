@@ -2,7 +2,7 @@ package com.kursea.walletdroid.activity;
 
 import java.util.Calendar;
 
-import org.android.walletdroid.R;
+import com.kursea.walletdroid.R;
 
 import android.app.Activity;
 import android.content.Context;

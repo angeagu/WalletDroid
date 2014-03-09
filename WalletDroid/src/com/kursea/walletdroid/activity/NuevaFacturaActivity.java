@@ -1,6 +1,6 @@
 package com.kursea.walletdroid.activity;
 
-import org.android.walletdroid.R;
+import com.kursea.walletdroid.R;
 
 import com.kursea.walletdroid.bbdd.ManagerBBDD;
 import com.kursea.walletdroid.utils.VentanaAlerta;
