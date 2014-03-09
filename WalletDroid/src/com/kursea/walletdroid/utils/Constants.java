@@ -1,4 +1,4 @@
-package org.android.walletdroid.utils;
+package com.kursea.walletdroid.utils;
 
 public class Constants {
 	

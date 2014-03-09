@@ -1,16 +1,11 @@
-package org.android.walletdroid.activity;
+package com.kursea.walletdroid.activity;
 
 import java.util.Calendar;
 
 import org.android.walletdroid.R;
-import org.android.walletdroid.bbdd.ManagerBBDD;
-import org.android.walletdroid.listener.TextViewMesOnClickListener;
-import org.android.walletdroid.utils.CrearCelda;
-import org.android.walletdroid.utils.UserInterfaceComponent;
-import org.android.walletdroid.utils.VentanaAlerta;
-import org.android.walletdroid.utils.WalletDroidDateUtils;
 
 import android.app.Activity;
+import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -23,11 +18,18 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
+import com.kursea.walletdroid.bbdd.ManagerBBDD;
+import com.kursea.walletdroid.listener.TextViewMesOnClickListener;
+import com.kursea.walletdroid.utils.CrearCelda;
+import com.kursea.walletdroid.utils.UserInterfaceComponent;
+import com.kursea.walletdroid.utils.VentanaAlerta;
+import com.kursea.walletdroid.utils.WalletDroidDateUtils;
+
 public class InformeMesesActivity extends Activity {
 	/** Called when the activity is first created. */
 	
 	Calendar cal = Calendar.getInstance(); 
-	int añoActual = cal.get(cal.YEAR);
+	int anoActual = cal.get(cal.YEAR);
 	ManagerBBDD managerbbdd;
 	SQLiteDatabase bbdd;
 	
@@ -39,7 +41,7 @@ public class InformeMesesActivity extends Activity {
         	
         	managerbbdd = ManagerBBDD.getInstance(this);
     		bbdd = managerbbdd.getReadableDatabase();
-        	actualizarListaFacturasAño(añoActual);
+        	actualizarListaFacturasAno(anoActual);
     		
     		
         }
@@ -50,20 +52,23 @@ public class InformeMesesActivity extends Activity {
      }
     
 
-    private void actualizarListaFacturasAño(int año) {
+    private void actualizarListaFacturasAno(int ano) {
+    	
+    	Context ctx = this.getApplicationContext();
+    	
     	LinearLayout linearLayout = new LinearLayout(this);
 		linearLayout.setOrientation(1); //Vertical
 		
-		//Añadimos un separador
+		//Anadimos un separador
 		View v = UserInterfaceComponent.createSeparator(this);
 		linearLayout.addView(v);
 		
-		//Creamos la cabecera de Año Actual.
-		TextView textViewAño = CrearCelda.getTextViewCabecera(this);
-		textViewAño.setText("Año Actual: " + añoActual);
-		linearLayout.addView(textViewAño);
+		//Creamos la cabecera de Ano Actual.
+		TextView textViewAno = CrearCelda.getTextViewCabecera(this);
+		textViewAno.setText(R.string.anoActual + anoActual);
+		linearLayout.addView(textViewAno);
 		
-		//Añadimos un separador.
+		//Anadimos un separador.
 		v = UserInterfaceComponent.createSeparator(this);
 		linearLayout.addView(v);
 		
@@ -73,16 +78,16 @@ public class InformeMesesActivity extends Activity {
     	
     	TableRow filaEncabezado = new TableRow(this);
     	TextView mes = CrearCelda.getCeldaEncabezado(this);
-    	mes.setText("  MES  ");
+    	mes.setText("  "+R.string.Mes+"  ");
     	TextView total = CrearCelda.getCeldaEncabezado(this);
-    	total.setText("   TOTAL  ");
+    	total.setText("   "+R.string.Total+"  ");
     	filaEncabezado.addView(mes);
     	filaEncabezado.addView(total);
     	tablaMensual.addView(filaEncabezado);
     	
     	Calendar c = Calendar.getInstance();
     	int numeromes = c.get(Calendar.MONTH) + 1;
-    	int numeroaño = año;
+    	int numeroano = ano;
     	Log.d("InformeMesesActivity", "Mes Actual: " + numeromes);
     	float importeTotal = 0.0f;
     	
@@ -91,16 +96,16 @@ public class InformeMesesActivity extends Activity {
     		TableRow filaMes = new TableRow(this);
     		//Cursor cursor = (Cursor) bbdd.query(table, columns, selection, selectionArgs, groupBy, having, orderBy);
     		Float importe = new Float (0);
-    		Cursor cursor = (Cursor) bbdd.rawQuery("SELECT SUM(IMPORTE) FROM FACTURAS WHERE FECHA LIKE '%-%"+ i +"-"+numeroaño+"'" , null);
+    		Cursor cursor = (Cursor) bbdd.rawQuery("SELECT SUM(IMPORTE) FROM FACTURAS WHERE FECHA LIKE '%-%"+ i +"-"+numeroano+"'" , null);
     		while (cursor.moveToNext()) {
     			importe = cursor.getFloat(cursor.getColumnIndex(cursor.getColumnName(0)));
     			String stringMes = "";
-    			stringMes = WalletDroidDateUtils.monthToString(i);
+    			stringMes = WalletDroidDateUtils.monthToString(ctx,i);
     			TextView celdaMes = CrearCelda.getCeldaTablaFacturas(this);
     			celdaMes.setText(stringMes);
-    			//Añadimos el listener para el TextView de Mes.
+    			//Anadimos el listener para el TextView de Mes.
     			celdaMes.setOnClickListener(TextViewMesOnClickListener.getInstance());
-    			celdaMes.setTag(stringMes+"-"+año);
+    			celdaMes.setTag(stringMes+"-"+ano);
     			filaMes.addView(celdaMes);
     			
     		}
@@ -114,7 +119,7 @@ public class InformeMesesActivity extends Activity {
     	
     	TableRow filaTotales = new TableRow(this);
     	TextView celdaTotales1 = CrearCelda.getCeldaTotales(this);
-    	celdaTotales1.setText("TOTAL ANUAL:   ");
+    	celdaTotales1.setText(R.string.totalAnual+" :   ");
     	filaTotales.addView(celdaTotales1);
     	TextView celdaTotales2 = CrearCelda.getCeldaTotales(this);
     	celdaTotales2.setText("   " + importeTotal);
@@ -128,23 +133,23 @@ public class InformeMesesActivity extends Activity {
     	
     	//Definimos el listener del Botón Anterior
     	Button botonAnterior = new Button(this);
-    	botonAnterior.setText("Año Anterior");
+    	botonAnterior.setText(R.string.anoAnterior);
     	botonAnterior.setOnClickListener(new OnClickListener() {
     		public void onClick(View v) {
-    			 añoActual = añoActual - 1;
-    			 VentanaAlerta.mostrarAlerta(getApplicationContext(), "Balance Año: " + añoActual);
-    			 InformeMesesActivity.this.actualizarListaFacturasAño(añoActual);       			
+    			 anoActual = anoActual - 1;
+    			 VentanaAlerta.mostrarAlerta(getApplicationContext(), R.string.BalanceAno+" " + anoActual);
+    			 InformeMesesActivity.this.actualizarListaFacturasAno(anoActual);       			
     		}
     	});
     	
     	//Definimos el listener del Botón Siguiente
     	Button botonSiguiente = new Button(this);
-    	botonSiguiente.setText("Año Siguiente");
+    	botonSiguiente.setText(R.string.anoSiguiente);
     	botonSiguiente.setOnClickListener(new OnClickListener() {
     		public void onClick(View v) {
-    			 añoActual = añoActual + 1;
-    			 VentanaAlerta.mostrarAlerta(getApplicationContext(), "Balance Año: " + añoActual);
-    			 InformeMesesActivity.this.actualizarListaFacturasAño(añoActual);        			
+    			 anoActual = anoActual + 1;
+    			 VentanaAlerta.mostrarAlerta(getApplicationContext(), R.string.BalanceAno+" "  + anoActual);
+    			 InformeMesesActivity.this.actualizarListaFacturasAno(anoActual);        			
     		}
     	});
     	

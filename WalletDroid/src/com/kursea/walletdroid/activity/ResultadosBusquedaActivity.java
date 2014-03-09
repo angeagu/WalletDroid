@@ -1,8 +1,11 @@
-package org.android.walletdroid.activity;
+package com.kursea.walletdroid.activity;
 
-import org.android.walletdroid.bbdd.ManagerBBDD;
-import org.android.walletdroid.utils.Constants;
-import org.android.walletdroid.utils.CrearCelda;
+
+import org.android.walletdroid.R;
+
+import com.kursea.walletdroid.bbdd.ManagerBBDD;
+import com.kursea.walletdroid.utils.Constants;
+import com.kursea.walletdroid.utils.CrearCelda;
 
 import android.app.Activity;
 import android.content.Context;
@@ -92,10 +95,10 @@ public class ResultadosBusquedaActivity extends Activity {
         		tablaFacturas.addView(filaFactura);
         	}
         	
-        	//Añadimos la fila de totales
+        	//Anadimos la fila de totales
         	TableRow filaTotales = new TableRow(this);
         	celda = CrearCelda.getCeldaTotales(this);
-        	celda.setText("TOTAL: ");
+        	celda.setText(R.string.Total);
         	filaTotales.addView(celda);
         	celda = CrearCelda.getCeldaTotales(this);
         	filaTotales.addView(celda);

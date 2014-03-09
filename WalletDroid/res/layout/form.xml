@@ -4,94 +4,150 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/vista_principal"
-    android:layout_width="fill_parent"
-    android:layout_height="374dp"
-    android:orientation="vertical" >
-
-    <TextView
-        android:layout_width="102dp"
-        android:layout_height="wrap_content"
-        android:text="@string/nueva_factura" />
-
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical" 
+    android:focusable="true"
+  	android:focusableInTouchMode="true" 
+    android:gravity="center">
    
-<TableLayout
+	<TableLayout
     android:id="@+id/formularioFactura"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content" >
-
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content" 
+    android:stretchColumns="*"
+    android:gravity="center">
+    
+	<TableRow
+        android:id="@+id/FilaCabecera"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center" >
+	    
+	    	<View
+    	android:layout_width="fill_parent"
+    	android:layout_height="45dp"
+    	android:gravity="center" />
+	    
+	        <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/nueva_factura"
+        android:ems="16"
+        android:gravity="center" />
+	       
+	        <View
+    	android:layout_width="fill_parent"
+    	android:layout_height="45dp"
+    	android:gravity="center" />
+	       
+	</TableRow>
+	        
     <TableRow
         android:id="@+id/FilaConceptoFactura"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content"
+        android:gravity="center" >
         
         <TextView
-        android:layout_width="75dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/LabelConcepto" />
+        android:text="@string/LabelConcepto"
+        android:gravity="center" />
 
         <EditText
             android:id="@+id/TextoConceptoFactura"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:ems="10" 
-            android:inputType="text"/>
+            android:ems="12" 
+            android:inputType="text"
+            android:gravity="center"/>
+        
+        <View
+    	android:layout_width="fill_parent"
+    	android:layout_height="15dp"
+    	android:gravity="center" />
 
-         <View
-    				android:layout_width="fill_parent"
-    				android:layout_height="15dp" />
-         
     </TableRow>
     
     <TableRow
         android:id="@+id/FilaFechaFactura"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content"
+        android:gravity="center" >
         
         <TextView
-        android:layout_width="75dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/LabelFecha" />
+        android:text="@string/LabelFecha"
+        android:gravity="center" />
 
         
         <DatePicker
             android:id="@+id/FechaFactura"
             android:calendarViewShown="false"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:gravity="center" />
+        
+        <View
+    	android:layout_width="fill_parent"
+    	android:layout_height="15dp"
+    	android:gravity="center" />
 
     </TableRow>
     
     <TableRow
         android:id="@+id/FilaImporteFactura"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content"
+        android:gravity="center" >
         
         <TextView
-        android:layout_width="75dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/LabelImporte" />
+        android:text="@string/LabelImporte"
+        android:gravity="center" />
 
         <EditText
             android:id="@+id/TextoImporteFactura"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:ems="10" >
+            android:ems="10"
+            android:gravity="center" >
 
         </EditText>
+        
+        <View
+    	android:layout_width="fill_parent"
+    	android:layout_height="15dp"
+    	android:gravity="center" />
 
     </TableRow>
+
     
+    <TableRow
+        android:id="@+id/FilaImporteFactura"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center" >
+
+        
+        <View
+    	android:layout_width="fill_parent"
+    	android:layout_height="10dp"
+    	android:gravity="center" />
+
+    </TableRow>
 
 </TableLayout>
 
-     <View
-    	android:layout_width="fill_parent"
-    	android:layout_height="15dp" />
      
     <Button
         android:id="@+id/BotonGuardarFactura"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/guardar_factura" />
+        android:text="@string/guardar_factura"
+        android:gravity="center" />
 
 </LinearLayout>

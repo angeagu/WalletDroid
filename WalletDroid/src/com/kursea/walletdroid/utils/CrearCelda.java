@@ -1,4 +1,4 @@
-package org.android.walletdroid.utils;
+package com.kursea.walletdroid.utils;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -40,7 +40,7 @@ public class CrearCelda {
 	public static TextView getTextViewCabecera(Context c) {
 		TextView celda = new TextView(c);
 		celda.setTextSize(22);
-    	celda.setTextColor(Color.BLUE);
+    	celda.setTextColor(Color.RED);
     	celda.setBackgroundColor(Color.BLACK);
     	return celda;
 	}

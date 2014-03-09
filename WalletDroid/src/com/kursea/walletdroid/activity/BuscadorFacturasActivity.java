@@ -1,11 +1,7 @@
-package org.android.walletdroid.activity;
+package com.kursea.walletdroid.activity;
 
-import org.android.walletdroid.bbdd.ManagerBBDD;
-import org.android.walletdroid.listener.TextViewFacturaOnClickListener;
-import org.android.walletdroid.utils.Constants;
-import org.android.walletdroid.utils.CrearCelda;
-import org.android.walletdroid.utils.UserInterfaceComponent;
 
+import android.R;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -22,6 +18,12 @@ import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+
+import com.kursea.walletdroid.bbdd.ManagerBBDD;
+import com.kursea.walletdroid.listener.TextViewFacturaOnClickListener;
+import com.kursea.walletdroid.utils.Constants;
+import com.kursea.walletdroid.utils.CrearCelda;
+import com.kursea.walletdroid.utils.UserInterfaceComponent;
 
 public class BuscadorFacturasActivity extends Activity {
 	 
@@ -41,7 +43,7 @@ public class BuscadorFacturasActivity extends Activity {
 	    		
 	    		//Etiqueta
 	    		TextView tView = new TextView(this);
-	    		tView.setText("Buscar Factura: ");
+	    		tView.setText("Buscar Facturas");
 	    		linearLayout.addView(tView);
 	    		
 	    		separador = UserInterfaceComponent.createSeparator(this);
@@ -105,12 +107,12 @@ public class BuscadorFacturasActivity extends Activity {
         	ingreso.setText("Ingreso  ");
         	TextView gasto = CrearCelda.getCeldaEncabezado(this);
         	gasto.setText("Gasto  ");
-        	//Añado los TextViews a la fila de encabezado.
+        	//Anado los TextViews a la fila de encabezado.
         	filaEncabezado.addView(concepto);
         	filaEncabezado.addView(fecha);
         	filaEncabezado.addView(ingreso);
         	filaEncabezado.addView(gasto);
-        	//Añado la fila de encabezado a la tabla.
+        	//Anado la fila de encabezado a la tabla.
         	tablaFacturas.addView(filaEncabezado);
         	
         	//Lanzamos la consulta.
@@ -121,7 +123,7 @@ public class BuscadorFacturasActivity extends Activity {
         	
         	while (cursor.moveToNext()) {
         		TableRow filaFactura = new TableRow(this);
-        		//Añadimos el concepto
+        		//Anadimos el concepto
         		String conceptoValue = cursor.getString(cursor.getColumnIndex("CONCEPTO"));
         		boolean newline = false;
         		if (conceptoValue.indexOf(" ")>0) {
@@ -129,14 +131,14 @@ public class BuscadorFacturasActivity extends Activity {
         			newline = true;
         		}
         		celda.setText(conceptoValue + "  ");
-        		//Añadimos el listener al concepto.
+        		//Anadimos el listener al concepto.
         		celda.setOnClickListener(TextViewFacturaOnClickListener.getInstance());
         		int id_recibo  = cursor.getInt(cursor.getColumnIndex("ID_RECIBO"));
        			celda.setTag(new Integer(id_recibo));
        			
         		filaFactura.addView(celda);
         		
-        		//Añadimos la fecha.
+        		//Anadimos la fecha.
         		celda = CrearCelda.getCeldaTablaFacturas(this);
         		String fechaValue = cursor.getString(cursor.getColumnIndex("FECHA"));
         		if (newline)
@@ -144,7 +146,7 @@ public class BuscadorFacturasActivity extends Activity {
         		celda.setText(fechaValue+ "  ");
         		filaFactura.addView(celda);
         		
-        		//Añadimos el importe.
+        		//Anadimos el importe.
         		celda = CrearCelda.getCeldaTablaFacturas(this);
         		Float importe = cursor.getFloat(cursor.getColumnIndex("IMPORTE"));
         		totalImportes = totalImportes + importe.floatValue();
@@ -180,7 +182,7 @@ public class BuscadorFacturasActivity extends Activity {
         		tablaFacturas.addView(filaFactura);
         	}
         	
-        	//Añadimos la fila de totales
+        	//Anadimos la fila de totales
         	TableRow filaTotales = new TableRow(this);
         	celda = CrearCelda.getCeldaTotales(this);
         	celda.setText("TOTAL: ");
@@ -203,8 +205,9 @@ public class BuscadorFacturasActivity extends Activity {
     		botonVolver.setText("Volver");
     		botonVolver.setOnClickListener(new OnClickListener() {
         		public void onClick(View v) {
-        			Intent i = new Intent(BuscadorFacturasActivity.this,WalletDroidActivity.class);
+        			Intent i = new Intent(BuscadorFacturasActivity.this,_WalletDroidActivity.class);
         			i.putExtra("mostrarTabFacturas",true);
+        			i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         			startActivity(i);
         			
         			

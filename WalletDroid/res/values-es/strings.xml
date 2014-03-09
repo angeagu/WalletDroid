@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="seleccione_mes">Seleccione un mes: </string>
+    <string name="app_name">WalletDroid</string>
+    <string name="nuevo_registro">Crear Registro</string>
+    <string name="nueva_factura">Nueva Factura</string>
+    <string name="guardar_factura">Guardar Factura </string>
+    <string name="buscar_factura">Buscar Factura </string>
+    <string name="LabelConcepto">Concepto: </string>
+    <string name="LabelFecha">Fecha </string>
+    <string name="LabelImporte">Importe: </string>
+    <string name="TabMes">Vista por Mes </string>
+    <string name="anterior">Anterior</string>
+    <string name="siguiente">Siguiente</string>
+    <string name="mesActual">Mes Actual:  </string>
+    <string name="mesInicio">Mes Inicio:  </string>
+    <string name="mesFin">Mes Fin:  </string>
+    <string name="filtrar_fechas">Filtro por Mes:</string>
+
+    <string name="menu_configuracion">Configuracion </string>
+    <string name="menu_exportar_excel">Exportar a Excel  </string>
+    <string name="menu_salir">Salir  </string>
+    
+    <string name="enero">Enero  </string>
+    <string name="febrero">Febrero  </string>
+    <string name="marzo">Marzo  </string>
+    <string name="abril">Abril  </string>
+    <string name="mayo">Mayo </string>
+    <string name="junio">Junio  </string>
+    <string name="julio">Julio  </string>
+    <string name="agosto">Agosto  </string>
+    <string name="septiembre">Septiembre  </string>
+    <string name="octubre">Octubre  </string>
+    <string name="noviembre">Noviembre  </string>
+    <string name="diciembre">Diciembre  </string>
+    
+    <string name="Mes">Mes</string>
+    <string name="Ano">Año</string>
+    <string name="BalanceMes">Balance Mes:</string>
+    <string name="BalanceAno">Balance Año:</string>
+    <string name="Concepto">Concepto</string>
+    <string name="Fecha">Fecha</string>
+    <string name="Ingreso">Ingreso</string>
+    <string name="Importe">Importe</string>
+    <string name="Gasto">Gasto</string>
+    <string name="Total">TOTAL</string>
+    <string name="anoActual">Año Actual</string>
+    <string name="totalAnual">Total Anual</string>
+    <string name="anoAnterior">Año Anterior</string>
+    <string name="anoSiguiente">Año Siguiente</string>
+    <string name="errorFormatoNumero">El campo importe debe ser un número entero o decimal</string>
+    <string name="conceptoNoVacio">El campo concepto no puede estar vacío</string>
+    <string name="facturas">facturas</string>
+    <string name="errorGenerarExcel">Error al generar Hoja Excel</string>
+    <string name="exitoGenerarExcel">Error al generar Hoja Excel</string>
+    <string name="almacenamientoNoDisponible">El almacenamiento externo no está disponible.</string>
+    <string name="excelDialogMensaje">Elija Mes inicio y Fin para generar la lista de facturas.</string>
+    <string name="configurationDialogMensaje">Elija Lenguaje: </string>
+    <string name="Aceptar">Aceptar</string>
+    <string name="Cancelar">Cancelar</string>
+    <string name="buscar">Buscar...</string>
+    <string name="buscar_por_concepto">Buscar Factura por Concepto: </string>
+    <string name="errorComprobacionFechas">La fecha de inicio no puede ser posterior a la fecha de fin."</string>
+    <string name="volver">Volver</string>
+    
+    <string-array name="languages">
+        <item>Español</item>
+        <item>English</item>
+        <item>Deutsch</item>
+        <item>Français</item>
+    </string-array>
+    
+</resources>

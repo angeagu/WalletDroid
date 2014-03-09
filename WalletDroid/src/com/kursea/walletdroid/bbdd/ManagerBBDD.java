@@ -1,4 +1,4 @@
-package org.android.walletdroid.bbdd;
+package com.kursea.walletdroid.bbdd;
 
 import java.util.Calendar;
 
@@ -47,7 +47,7 @@ public class ManagerBBDD extends SQLiteOpenHelper {
 		Calendar c = Calendar.getInstance();
 		Calendar cal = Calendar.getInstance();
     	int mesActual = cal.get(cal.MONTH) + 1; 
-    	int añoActual = cal.get(cal.YEAR);
+    	int anoActual = cal.get(cal.YEAR);
 		
 		SQLiteDatabase db = this.getReadableDatabase();
 		Cursor cursor = (Cursor) db.rawQuery( "SELECT * FROM FACTURAS" , null);
@@ -65,6 +65,8 @@ public class ManagerBBDD extends SQLiteOpenHelper {
 			db2.execSQL("INSERT INTO FACTURAS (CONCEPTO,IMPORTE,FECHA) VALUES ('Iberdrola','98.87','8-5-2012')");
 			db2.execSQL("INSERT INTO FACTURAS (CONCEPTO,IMPORTE,FECHA) VALUES ('Compra Supermercado','123.45','9-6-2012')"); 
 			db2.execSQL("INSERT INTO FACTURAS (CONCEPTO,IMPORTE,FECHA) VALUES ('Taller Coche','98.87','10-6-2012')");
+			db2.execSQL("INSERT INTO FACTURAS (CONCEPTO,IMPORTE,FECHA) VALUES ('Compra Supermercado','123.45','9-10-2012')"); 
+			db2.execSQL("INSERT INTO FACTURAS (CONCEPTO,IMPORTE,FECHA) VALUES ('Taller Coche','98.87','10-11-2012')");
 		
 			db2.execSQL("INSERT INTO FACTURAS (CONCEPTO,IMPORTE,FECHA) VALUES ('Gas','123.45','31-7-2013')"); 
 			db2.execSQL("INSERT INTO FACTURAS (CONCEPTO,IMPORTE,FECHA) VALUES ('Alquiler','98.87','22-5-2013')");
@@ -76,20 +78,23 @@ public class ManagerBBDD extends SQLiteOpenHelper {
 			db2.execSQL("INSERT INTO FACTURAS (CONCEPTO,IMPORTE,FECHA) VALUES ('Iberdrola','98.87','8-5-2013')");
 			db2.execSQL("INSERT INTO FACTURAS (CONCEPTO,IMPORTE,FECHA) VALUES ('Compra Supermercado','123.45','9-6-2013')"); 
 			db2.execSQL("INSERT INTO FACTURAS (CONCEPTO,IMPORTE,FECHA) VALUES ('Taller Coche','198.87','10-6-2013')");
+			db2.execSQL("INSERT INTO FACTURAS (CONCEPTO,IMPORTE,FECHA) VALUES ('Compra Supermercado','123.45','9-11-2013')"); 
+			db2.execSQL("INSERT INTO FACTURAS (CONCEPTO,IMPORTE,FECHA) VALUES ('Taller Coche','198.87','10-12-2013')");
+			db2.execSQL("INSERT INTO FACTURAS (CONCEPTO,IMPORTE,FECHA) VALUES ('Taller Coche','198.87','10-11-2013')");
 			
-			db2.execSQL("INSERT INTO FACTURAS (CONCEPTO,IMPORTE,FECHA) VALUES ('Gas','123.45','31-"+mesActual+"-"+añoActual+"')"); 
-			db2.execSQL("INSERT INTO FACTURAS (CONCEPTO,IMPORTE,FECHA) VALUES ('Alquiler','98.87','22-"+mesActual+"-"+añoActual+"')");
-			db2.execSQL("INSERT INTO FACTURAS (CONCEPTO,IMPORTE,FECHA) VALUES ('IBI','123.45','13-"+mesActual+"-"+añoActual+"')"); 
-			db2.execSQL("INSERT INTO FACTURAS (CONCEPTO,IMPORTE,FECHA) VALUES ('Agua','98.87','24-"+mesActual+"-"+añoActual+"')");
-			db2.execSQL("INSERT INTO FACTURAS (CONCEPTO,IMPORTE,FECHA) VALUES ('Dinero Cajero','123.45','15-"+mesActual+"-"+añoActual+"')"); 
-			db2.execSQL("INSERT INTO FACTURAS (CONCEPTO,IMPORTE,FECHA) VALUES ('Comisiones','98.87','6-"+mesActual+"-"+añoActual+"')");
-			db2.execSQL("INSERT INTO FACTURAS (CONCEPTO,IMPORTE,FECHA) VALUES ('Telefono','123.45','21-"+mesActual+"-"+añoActual+"')");
-			db2.execSQL("INSERT INTO FACTURAS (CONCEPTO,IMPORTE,FECHA) VALUES ('Iberdrola','98.87','8-"+mesActual+"-"+añoActual+"')");
-			db2.execSQL("INSERT INTO FACTURAS (CONCEPTO,IMPORTE,FECHA) VALUES ('Compra Supermercado','123.45','9-"+mesActual+"-"+añoActual+"')");
-			db2.execSQL("INSERT INTO FACTURAS (CONCEPTO,IMPORTE,FECHA) VALUES ('Taller Coche','198.87','10-"+mesActual+"-"+añoActual+"')");
-			db2.execSQL("INSERT INTO FACTURAS (CONCEPTO,IMPORTE,FECHA) VALUES ('Test1','98.87','8-"+mesActual+"-"+añoActual+"')");
-			db2.execSQL("INSERT INTO FACTURAS (CONCEPTO,IMPORTE,FECHA) VALUES ('Test2','123.45','9-"+mesActual+"-"+añoActual+"')");
-			db2.execSQL("INSERT INTO FACTURAS (CONCEPTO,IMPORTE,FECHA) VALUES ('Test3','198.87','10-"+mesActual+"-"+añoActual+"')");
+			db2.execSQL("INSERT INTO FACTURAS (CONCEPTO,IMPORTE,FECHA) VALUES ('Gas','123.45','31-"+mesActual+"-"+anoActual+"')"); 
+			db2.execSQL("INSERT INTO FACTURAS (CONCEPTO,IMPORTE,FECHA) VALUES ('Alquiler','98.87','22-"+mesActual+"-"+anoActual+"')");
+			db2.execSQL("INSERT INTO FACTURAS (CONCEPTO,IMPORTE,FECHA) VALUES ('IBI','123.45','13-"+mesActual+"-"+anoActual+"')"); 
+			db2.execSQL("INSERT INTO FACTURAS (CONCEPTO,IMPORTE,FECHA) VALUES ('Agua','98.87','24-"+mesActual+"-"+anoActual+"')");
+			db2.execSQL("INSERT INTO FACTURAS (CONCEPTO,IMPORTE,FECHA) VALUES ('Dinero Cajero','123.45','15-"+mesActual+"-"+anoActual+"')"); 
+			db2.execSQL("INSERT INTO FACTURAS (CONCEPTO,IMPORTE,FECHA) VALUES ('Comisiones','98.87','6-"+mesActual+"-"+anoActual+"')");
+			db2.execSQL("INSERT INTO FACTURAS (CONCEPTO,IMPORTE,FECHA) VALUES ('Telefono','123.45','21-"+mesActual+"-"+anoActual+"')");
+			db2.execSQL("INSERT INTO FACTURAS (CONCEPTO,IMPORTE,FECHA) VALUES ('Iberdrola','98.87','8-"+mesActual+"-"+anoActual+"')");
+			db2.execSQL("INSERT INTO FACTURAS (CONCEPTO,IMPORTE,FECHA) VALUES ('Compra Supermercado','123.45','9-"+mesActual+"-"+anoActual+"')");
+			db2.execSQL("INSERT INTO FACTURAS (CONCEPTO,IMPORTE,FECHA) VALUES ('Taller Coche','198.87','10-"+mesActual+"-"+anoActual+"')");
+			db2.execSQL("INSERT INTO FACTURAS (CONCEPTO,IMPORTE,FECHA) VALUES ('Test1','98.87','8-"+mesActual+"-"+anoActual+"')");
+			db2.execSQL("INSERT INTO FACTURAS (CONCEPTO,IMPORTE,FECHA) VALUES ('Test2','123.45','9-"+mesActual+"-"+anoActual+"')");
+			db2.execSQL("INSERT INTO FACTURAS (CONCEPTO,IMPORTE,FECHA) VALUES ('Test3','198.87','10-"+mesActual+"-"+anoActual+"')");
 			
 		}
 	}

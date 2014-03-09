@@ -1,7 +1,9 @@
-package org.android.walletdroid.activity;
+package com.kursea.walletdroid.activity;
 
 import org.android.walletdroid.R;
-import org.android.walletdroid.bbdd.ManagerBBDD;
+
+import com.kursea.walletdroid.bbdd.ManagerBBDD;
+import com.kursea.walletdroid.utils.VentanaAlerta;
 
 import android.app.Activity;
 import android.content.Context;
@@ -25,7 +27,7 @@ public class NuevaFacturaActivity extends Activity {
 		
 		try {
 			super.onCreate(savedInstanceState);
-			setContentView(R.layout.form);
+			setContentView(R.layout.form);	
 			
 			if (extras!=null) {
 				
@@ -38,16 +40,18 @@ public class NuevaFacturaActivity extends Activity {
 				Float importe = extras.getFloat("importe");
 
 				//Establecemos el valor del concepto.
+
 				EditText etConcepto = (EditText) this.findViewById(R.id.TextoConceptoFactura);
 				etConcepto.setText(concepto);
+				etConcepto.clearFocus();
 				
 				//Establecemos la fecha
 				DatePicker datePicker = (DatePicker) this.findViewById(R.id.FechaFactura);
 				String[] tokens = fecha.split("-");
     			int dia = Integer.parseInt(tokens[0]); 
     			int mes = Integer.parseInt(tokens[1]);
-    			int año = Integer.parseInt(tokens[2]);
-				datePicker.updateDate(año, mes-1, dia);
+    			int ano = Integer.parseInt(tokens[2]);
+				datePicker.updateDate(ano, mes-1, dia);
 				etConcepto.setText(concepto);
 				
 				//Establecemos el valor del importe.
@@ -56,27 +60,24 @@ public class NuevaFacturaActivity extends Activity {
 				
 			}
         
-			/*
-			//Ponemos el menú de nuevo registro, el Fragment.
-			MenuNuevoRegistroFragment menuNuevoRegistro = new MenuNuevoRegistroFragment();
-			menuNuevoRegistro.setArguments(getIntent().getExtras());
-    	
-			// Añadimos el fragmento al 'fragment_container' Linear Layout
-			getSupportFragmentManager().beginTransaction()
-               .add(R.id.vista_principal, menuNuevoRegistro).commit();
-			*/
 			
 			//Definimos el listener del Botón Guardar Factura
         	Button botonGuardarFactura = (Button) this.findViewById(R.id.BotonGuardarFactura);
         	botonGuardarFactura.setOnClickListener(new OnClickListener() {
         		public void onClick(View v) {
         			        			    
-        			guardarFactura(v.getContext());
-        			//Invocamos a la actividad principal para que vuelva a mostrar
+        			if (guardarFactura(v.getContext())) {
+        			//Si la factura se ha guardado correctamente, 
+        			//invocamos a la actividad principal para que vuelva a mostrar
         			//la lista de facturas.
-        			Intent i = new Intent(NuevaFacturaActivity.this,WalletDroidActivity.class);
-        			//startActivityForResult(i, 1);
-        			startActivity(i);
+        			//Intent i = new Intent(NuevaFacturaActivity.this,WalletDroidActivity.class);
+        				Intent intent = new Intent(NuevaFacturaActivity.this,ActionBarWalletDroidActivity.class);
+        				//intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+        				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        				//startActivityForResult(i, 1);
+        				startActivity(intent);
+        			
+        			}
         			
         		}
         	});
@@ -88,8 +89,13 @@ public class NuevaFacturaActivity extends Activity {
       }
 	}
 	
-	private void guardarFactura(Context context) {
+	private boolean guardarFactura(Context context) {
+		float importe=0;
+		String errores = "";
+		boolean guardadoCorrecto = false;
+		
 		try {
+			
 			EditText conceptoEditText = (EditText)this.findViewById(R.id.TextoConceptoFactura);
 			DatePicker fechaPicker = (DatePicker)this.findViewById(R.id.FechaFactura);
 			EditText importeEditText = (EditText)this.findViewById(R.id.TextoImporteFactura);
@@ -98,21 +104,41 @@ public class NuevaFacturaActivity extends Activity {
 			String fecha = fechaPicker.getDayOfMonth() + "-" + 
 						(fechaPicker.getMonth()+1) + "-" +
 						fechaPicker.getYear();
-			float importe = Float.parseFloat(importeEditText.getText().toString());
-		
-			ManagerBBDD manager = ManagerBBDD.getInstance(context);
-			if (updateFactura==false) {
-				//Añadimos nueva factura.
-				manager.addFactura(concepto, fecha, importe);
+			try {
+				importe = Float.parseFloat(importeEditText.getText().toString());
 			}
-			else 
-				manager.updateFactura(id_recibo,concepto, fecha, importe);
+			catch (NumberFormatException ex) {
+				errores += context.getResources().getString(R.string.errorFormatoNumero) + System.getProperty("line.separator"); 
+			}
+			if (concepto.length()==0) {
+				errores += context.getResources().getString(R.string.conceptoNoVacio) + System.getProperty("line.separator");
+			}
+			
+			if (errores.length()==0) {
+				//No hay errores. Actualizamos.
+				ManagerBBDD manager = ManagerBBDD.getInstance(context);
+				if (updateFactura==false) {
+					//Anadimos nueva factura.
+					manager.addFactura(concepto, fecha, importe);
+				}
+				else { 
+					manager.updateFactura(id_recibo,concepto, fecha, importe);
+				}
+				guardadoCorrecto=true;
+			}
+			else {
+				VentanaAlerta.mostrarAlerta(context, errores);
+				guardadoCorrecto=false;
+			}
+			
+			
 		}
 		catch (Exception e) {
 			Log.e("NuevaFacturaActivity.guardarFactura()", "Excepcion: " + e.toString());
         	Log.e("NuevaFacturaActivity.guardarFactura()", "Mensaje: " + e.getMessage());
         	e.printStackTrace();
 		}
+		return guardadoCorrecto;
 	}
 	
 }

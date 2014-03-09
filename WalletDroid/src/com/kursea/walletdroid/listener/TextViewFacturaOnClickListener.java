@@ -1,8 +1,9 @@
-package org.android.walletdroid.listener;
+package com.kursea.walletdroid.listener;
 
-import org.android.walletdroid.activity.NuevaFacturaActivity;
-import org.android.walletdroid.activity.WalletDroidActivity;
-import org.android.walletdroid.bbdd.ManagerBBDD;
+
+import com.kursea.walletdroid.activity.NuevaFacturaActivity;
+import com.kursea.walletdroid.activity._WalletDroidActivity;
+import com.kursea.walletdroid.bbdd.ManagerBBDD;
 
 import android.content.Intent;
 import android.database.Cursor;
@@ -37,6 +38,8 @@ public class TextViewFacturaOnClickListener implements OnClickListener {
    		//Creamos un Intent para invocar a NuevaFacturaActivity para mostrar
    		//el formulario de la factura con los datos obtenidos.
    		Intent i = new Intent(v.getContext(),NuevaFacturaActivity.class);
+   		//Requiere establecer este flag, sino genera una excepción.
+   		i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
    		if (cursor.moveToNext()) {
    			String concepto = cursor.getString(cursor.getColumnIndex("CONCEPTO"));
    			String fecha = cursor.getString(cursor.getColumnIndex("FECHA"));
