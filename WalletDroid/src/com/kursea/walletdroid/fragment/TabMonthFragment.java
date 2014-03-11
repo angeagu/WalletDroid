@@ -230,7 +230,8 @@ public class TabMonthFragment extends Fragment {
     		//Obtenemos las facturas desde la base de datos:
     		SQLiteDatabase bbdd = managerbbdd.getReadableDatabase();
     		//Cursor cursor = (Cursor) bbdd.query("FACTURAS", new String[]{"CONCEPTO","IMPORTE","FECHA"}, "", null, null, null, null);
-    		String query = "SELECT ID_RECIBO,CONCEPTO,IMPORTE,FECHA FROM FACTURAS WHERE FECHA LIKE '%-%" + mesActual + "-"+anoActual+"%' ORDER BY FECHA ASC";
+    		//String query = "SELECT ID_RECIBO,CONCEPTO,IMPORTE,FECHA FROM FACTURAS WHERE FECHA LIKE '%-%" + mesActual + "-"+anoActual+"%' ORDER BY FECHA ASC";
+    		String query = "SELECT ID_RECIBO,CONCEPTO,IMPORTE,FECHA FROM FACTURAS WHERE FECHA LIKE '%-" + mesActual + "-"+anoActual+"' ORDER BY FECHA ASC";
     		
     		Cursor cursor = (Cursor) bbdd.rawQuery(query , null);
     		float totalImportes = 0;
