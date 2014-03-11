@@ -6,6 +6,7 @@
     <string name="nuevo_registro">Create Record</string>
     <string name="nueva_factura">New Record</string>
     <string name="guardar_factura">Save Record </string>
+    <string name="borrar_factura">Delete Record </string>
     <string name="buscar_factura">Search Record </string>
     <string name="LabelConcepto">Concept: </string>
     <string name="LabelFecha">Date </string>
@@ -63,6 +64,7 @@
     <string name="buscar_por_concepto">Search Invoice by Concept: </string>
     <string name="errorComprobacionFechas">The start date can not be after the end date.</string>
     <string name="volver">Back</string>
+    <string name="formato">Format</string>
     
     <string-array name="languages">
         <item>Español</item>

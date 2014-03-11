@@ -150,4 +150,11 @@
         android:text="@string/guardar_factura"
         android:gravity="center" />
 
+    <Button
+        android:id="@+id/BotonEliminarFactura"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/borrar_factura"
+        android:gravity="center" />
+    
 </LinearLayout>

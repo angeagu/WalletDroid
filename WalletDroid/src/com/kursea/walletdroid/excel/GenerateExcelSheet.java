@@ -43,9 +43,25 @@ public class GenerateExcelSheet {
          String concepto=ctx.getResources().getString(R.string.Concepto);
          String fecha=ctx.getResources().getString(R.string.Fecha);
          String importeString=ctx.getResources().getString(R.string.Importe);
+         FileOutputStream out;
+         
+         //Escribimos la excel y cerramos.
+         if (isExternalStorageWritable()) {
+         	File file = new File(Environment.getExternalStoragePublicDirectory(
+                     Environment.DIRECTORY_DOWNLOADS), nombreFichero);
+         	out = new FileOutputStream(file);
+         	//FileOutputStream out = ctx.getApplicationContext().openFileOutput(nombreFichero, Context.MODE_PRIVATE);
+         }
+         else {
+         	//Avisar de que el almacenamiento externo no está disponible.
+         	errors = ctx.getResources().getString(R.string.almacenamientoNoDisponible);
+         	return errors;
+         }
+         
         
          do {
-        	String query = "SELECT ID_RECIBO,CONCEPTO,IMPORTE,FECHA FROM FACTURAS WHERE FECHA LIKE '%-" + mesInicio + "-"+anoInicio+"%' ORDER BY FECHA ASC";
+        	//String query = "SELECT ID_RECIBO,CONCEPTO,IMPORTE,FECHA FROM FACTURAS WHERE FECHA LIKE '%-" + mesInicio + "-"+anoInicio+"%' ORDER BY FECHA ASC";
+        	String query = "SELECT ID_RECIBO,CONCEPTO,IMPORTE,FECHA FROM FACTURAS WHERE FECHA LIKE '%-" + mesInicio + "-"+anoInicio+"' ORDER BY FECHA ASC";
         	Cursor cursor = (Cursor) bbdd.rawQuery(query , null);
 	
         	//Datos a escribir
@@ -72,21 +88,12 @@ public class GenerateExcelSheet {
         	}
         	
         }
-        while (mesInicio<=mesFin || anoInicio<=anoFin);
-        
-        //Escribimos la excel y cerramos.
-        if (isExternalStorageWritable()) {
-        	File file = new File(Environment.getExternalStoragePublicDirectory(
-                    Environment.DIRECTORY_DOWNLOADS), nombreFichero);
-        	FileOutputStream out = new FileOutputStream(file);
-        	//FileOutputStream out = ctx.getApplicationContext().openFileOutput(nombreFichero, Context.MODE_PRIVATE);
-        	workbook.write(out);
-        	out.close();
-        }
-        else {
-        	//Avisar de que el almacenamiento externo no está disponible.
-        	errors = ctx.getResources().getString(R.string.almacenamientoNoDisponible);
-        }
+        //while (mesInicio<=mesFin || anoInicio<=anoFin);
+        while ((anoInicio!=anoFin)|| ((anoInicio==anoFin)&&(mesInicio<=mesFin)));
+
+        workbook.write(out);
+      	out.close(); 
+         
         
 		}
         catch (Exception ex) {

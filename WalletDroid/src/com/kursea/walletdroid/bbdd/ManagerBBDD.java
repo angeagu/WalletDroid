@@ -105,6 +105,12 @@ public class ManagerBBDD extends SQLiteOpenHelper {
 			
 	}
 	
+	public void eliminarFactura(int id_recibo) {
+		SQLiteDatabase db = this.getWritableDatabase();
+		db.execSQL("DELETE FROM FACTURAS WHERE ID_RECIBO = '"+id_recibo+"'"); 
+			
+	}
+	
 	public void updateFactura(int id_recibo, String concepto, String fecha, float importe) {
 		SQLiteDatabase db = this.getWritableDatabase();
 		String sql = "UPDATE FACTURAS SET CONCEPTO='"+concepto+"', IMPORTE='"+importe+"', FECHA='"+fecha+"' WHERE ID_RECIBO='"+id_recibo+"'";

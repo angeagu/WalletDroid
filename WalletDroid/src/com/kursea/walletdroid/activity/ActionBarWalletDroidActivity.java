@@ -34,14 +34,6 @@ public class ActionBarWalletDroidActivity extends ActionBarActivity {
         Bundle extras = getIntent().getExtras();
         boolean mostrarTabFacturas = false;
         
-        /*
-        Locale locale = new Locale("fr");
-        Locale.setDefault(locale);
-        Configuration config = new Configuration();
-        config.locale = locale;
-        ctx.getApplicationContext().getResources().updateConfiguration(config, null);
-        */
-            
     	if(extras!=null){
     		//Recogemos los valores seleccionados en el SELECT de meses.
     		//Comprobamos si volvemos desde Buscar Facturas.

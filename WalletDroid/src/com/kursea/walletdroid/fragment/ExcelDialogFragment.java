@@ -1,11 +1,8 @@
 package com.kursea.walletdroid.fragment;
 
 import java.lang.reflect.Field;
-
-import com.kursea.walletdroid.R;
-
-import com.kursea.walletdroid.excel.GenerateExcelSheet;
-import com.kursea.walletdroid.utils.VentanaAlerta;
+import java.util.ArrayList;
+import java.util.List;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -16,10 +13,18 @@ import android.support.v4.app.DialogFragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
+import android.widget.Spinner;
 import android.widget.TableLayout;
 import android.widget.TableRow;
+import android.widget.TextView;
+
+import com.kursea.walletdroid.R;
+import com.kursea.walletdroid.csv.GenerateCSVFile;
+import com.kursea.walletdroid.excel.GenerateExcelSheet;
+import com.kursea.walletdroid.utils.VentanaAlerta;
 
 public class ExcelDialogFragment extends DialogFragment {
     
@@ -40,6 +45,23 @@ public class ExcelDialogFragment extends DialogFragment {
         tableLayoutFiltro = (TableLayout)inflater.inflate(R.layout.searchdatefilters, null);
         CheckBox checkBoxFiltroFechas = (CheckBox)tableLayoutFiltro.findViewById(R.id.checkBoxFiltroFechas);
     	checkBoxFiltroFechas.setVisibility(View.GONE);
+    	
+    	TableRow rowFormato = new TableRow(ctx);
+    	TextView textViewFormato = new TextView(ctx);
+    	textViewFormato.setText(ctx.getResources().getString(R.string.formato));
+    	
+    	final Spinner formatSpinner = new Spinner(ctx);
+    	List<String> list = new ArrayList<String>();
+    	list.add("Excel (XLS)");
+    	list.add("CSV");
+    	ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(ctx,
+    		android.R.layout.simple_spinner_item, list);
+    	dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+    	formatSpinner.setAdapter(dataAdapter);
+    	rowFormato.addView(textViewFormato);
+    	rowFormato.addView(formatSpinner);
+    	
+    	tableLayoutFiltro.addView(rowFormato,0);
     	
     	DatePicker pickerInicio = (DatePicker) tableLayoutFiltro.findViewById(R.id.datePickerFechaInicio);
         try {
@@ -104,9 +126,18 @@ public class ExcelDialogFragment extends DialogFragment {
                     TableRow filaFechaFin = (TableRow)tableSearchFilters.findViewById(R.id.tableRowFechaFin);
                     DatePicker datePickerFechaFin = (DatePicker)filaFechaFin.findViewById(R.id.datePickerFechaFin);
                     mesFin=datePickerFechaFin.getMonth()+1;
-                    anoFin=datePickerFechaFin.getYear();    	
+                    anoFin=datePickerFechaFin.getYear();   
+                    
+                    //Formato
+                    String formato = formatSpinner.getSelectedItem().toString();
                         
-                    String errores = GenerateExcelSheet.generateExcelSheet(mesInicio, anoInicio, mesFin, anoFin, getActivity().getApplicationContext());
+                    String errores;
+                    if (!formato.equalsIgnoreCase("CSV")) {
+                    	errores = GenerateExcelSheet.generateExcelSheet(mesInicio, anoInicio, mesFin, anoFin, getActivity().getApplicationContext());
+                    }
+                    else {
+                    	errores = GenerateCSVFile.generateCSVFile(mesInicio, anoInicio, mesFin, anoFin, getActivity().getApplicationContext());
+                    }
                     if (errores.length()==0) {
                     	//La Hoja Excel se ha guardado correctamente.
                     	VentanaAlerta.mostrarAlertaLarga(tableSearchFilters.getContext(), 

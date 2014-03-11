@@ -1,10 +1,5 @@
 package com.kursea.walletdroid.activity;
 
-import com.kursea.walletdroid.R;
-
-import com.kursea.walletdroid.bbdd.ManagerBBDD;
-import com.kursea.walletdroid.utils.VentanaAlerta;
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -15,6 +10,11 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+
+import com.kursea.walletdroid.R;
+import com.kursea.walletdroid.bbdd.ManagerBBDD;
+import com.kursea.walletdroid.utils.VentanaAlerta;
 
 public class NuevaFacturaActivity extends Activity {
 
@@ -28,11 +28,14 @@ public class NuevaFacturaActivity extends Activity {
 		try {
 			super.onCreate(savedInstanceState);
 			setContentView(R.layout.form);	
+			Button botonEliminarFactura = (Button) this.findViewById(R.id.BotonEliminarFactura);
 			
 			if (extras!=null) {
 				
 				//Estamos tratando de actualizar una factura.
 				updateFactura=true;
+				
+				LinearLayout formulario = (LinearLayout)this.findViewById(R.id.vista_principal);
 				
 				id_recibo = extras.getInt("id_recibo");
 				String concepto = extras.getString("concepto"); 
@@ -58,6 +61,15 @@ public class NuevaFacturaActivity extends Activity {
 				EditText etImporte = (EditText) this.findViewById(R.id.TextoImporteFactura);
 				etImporte.setText(importe.toString());
 				
+				
+	        	botonEliminarFactura.setEnabled(true);
+				
+			}
+			else {
+				//Nueva Factura. 
+				
+				//Deshabilitamos el botón de borrar factura.
+				botonEliminarFactura.setEnabled(false);
 			}
         
 			
@@ -81,6 +93,27 @@ public class NuevaFacturaActivity extends Activity {
         			
         		}
         	});
+        	
+        	//Definimos el listener del Botón Guardar Factura
+        	botonEliminarFactura.setOnClickListener(new OnClickListener() {
+        		public void onClick(View v) {
+        			        			    
+        			if (eliminarFactura(v.getContext())) {
+        				//Si la factura se ha eliminado correctamente, 
+        				//invocamos a la actividad principal para que vuelva a mostrar
+        				//la lista de facturas.
+        				//Intent i = new Intent(NuevaFacturaActivity.this,WalletDroidActivity.class);
+        				Intent intent = new Intent(NuevaFacturaActivity.this,ActionBarWalletDroidActivity.class);
+        				//intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+        				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        				//startActivityForResult(i, 1);
+        				startActivity(intent);
+        			
+        			}
+        			
+        		}
+        	});
+        	
 		}
 		catch (Exception e) {
         	Log.e("NuevaFacturaActivity", "Excepcion: " + e.toString());
@@ -141,4 +174,33 @@ public class NuevaFacturaActivity extends Activity {
 		return guardadoCorrecto;
 	}
 	
+	
+	private boolean eliminarFactura(Context context) {
+		float importe=0;
+		boolean guardadoCorrecto = false;
+		
+		try {
+			
+			EditText conceptoEditText = (EditText)this.findViewById(R.id.TextoConceptoFactura);
+			DatePicker fechaPicker = (DatePicker)this.findViewById(R.id.FechaFactura);
+			EditText importeEditText = (EditText)this.findViewById(R.id.TextoImporteFactura);
+		
+			String concepto = conceptoEditText.getText().toString();
+			String fecha = fechaPicker.getDayOfMonth() + "-" + 
+						(fechaPicker.getMonth()+1) + "-" +
+						fechaPicker.getYear();
+						
+			//No hay errores. Actualizamos.
+			ManagerBBDD manager = ManagerBBDD.getInstance(context);
+			manager.eliminarFactura(id_recibo);
+			guardadoCorrecto=true;
+					
+		}
+		catch (Exception e) {
+			Log.e("NuevaFacturaActivity.guardarFactura()", "Excepcion: " + e.toString());
+        	Log.e("NuevaFacturaActivity.guardarFactura()", "Mensaje: " + e.getMessage());
+        	e.printStackTrace();
+		}
+		return guardadoCorrecto;
+	}
 }
